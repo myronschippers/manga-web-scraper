@@ -12,6 +12,7 @@ const chalk= require('chalk');
 class Logger {
     constructor() {
         this._errorStyle = chalk.red.bold;
+        this._successStyle = chalk.green.bold;
         this._msgStyle = chalk.cyan;
         this._log = console.log;
         this._divider = `\n==================== ** ====================\n`;
@@ -37,7 +38,7 @@ class Logger {
 
     label(title) {
         const titleHdg = this._createHeader(title);
-        console.log(chalk.blue(titleHdg));
+        this._log(chalk.blue(titleHdg));
     }
 
     sample(heading, message) {
@@ -59,14 +60,20 @@ class Logger {
 
     end(label) {
         const footerHdg = this._createFooter(`END!! ${label}`);
-        console.log(chalk.blue(footerHdg));
+        this._log(chalk.blue(footerHdg));
     }
 
     message(...msgArgs) {
         const newMessages = msgArgs.map((logArg) => {
             return this._msgStyle(logArg);
         });
-        console.log(...newMessages, this._msgStyle('\n'));
+        this._log(...newMessages);
+    }
+
+    success(label, ...args) {
+        const framedHdg = this._createHeader(label);
+        const footHdg = this._createFooter('end success');
+        this._log(this._successStyle(framedHdg), ...args, this._successStyle(footHdg));
     }
 
     static createSingleton() {
