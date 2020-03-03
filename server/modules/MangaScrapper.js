@@ -9,10 +9,14 @@ class MangaScapper {
         this._baseUrl = 'https://manganelo.com/';
         this._searchParam = 'search/';
         this._searchWords = null;
+        this._headlessChrome = {};
+        this._isLoaded = false;
     }
 
     _init() {
-        this._loadScan();
+        this._loadScan().then((scanner) => {
+            this._headlessChrome = scanner;
+        });
     }
 
     async _loadScan() {
@@ -22,17 +26,25 @@ class MangaScapper {
         // logger.sample('SERVER, browser:', browser);
         // open a new browser page
         const page = await browser.newPage();
-        // logger.sample('SERVER, page:', page);
+        logger.sample('SERVER, page:', page);
+
+        this._headlessChrome = {
+            page,
+            browser
+        };
+        this._isLoaded = true;
+    }
+
+    async _searchMangaSite(chromePkg) {
+        const {
+            page,
+        } = chromePkg;
+
         // enter url in page and navigate to that page
         // Navigates to the search results for the 
         await page.goto(`https://manganelo.com/search/solo_leveling`);
 
         logger.label('PAGE LOADED');
-        
-        const searchResultSelector = `#SearchResult`;
-        const searchInputSelector = `#search-story`;
-        const searchResultItem = `.search-story-item`;
-        const searchResultDropdownLinks = `#SearchResult ul > a`;
     
         const resultsDataList = await page.evaluate(() => {
             const searchResults = document.querySelectorAll(`.search-story-item > a`);
@@ -83,10 +95,19 @@ class MangaScapper {
         //     mangaChapterList[index].images = chapterImagesData;
         // });
     
-        await browser.close();
+        // await browser.close();
     }
 
-    
+    async _closeScanner(chromePkg) {
+        const {
+            browser,
+        } = chromePkg;
+
+        await browser.close();
+
+        this._headlessChrome = {};
+        this._isLoaded = false;
+    }
 
     _makeSearchTermParam(searchTerm) {
         let searchParam = searchTerm.replace(' ', '_');
@@ -97,6 +118,21 @@ class MangaScapper {
         this._searchWords = searchWords;
         const searchParam = this._makeSearchTermParam(searchWords);
     }
+
+    //
+    // GETTERS & SETTERS
+    // ------------------------------
+
+    /**
+     * Only a getter is needed. External sources are not needed.
+     */
+    get isLoaded() {
+        return this._isLoaded;
+    }
+
+    //
+    // KICKOFF FOR SINGLETON
+    // ------------------------------
 
     static createSingleton() {
         return new MangaScapper();
