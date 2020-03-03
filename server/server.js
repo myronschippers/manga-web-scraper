@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 // external modules
-const logger = require('./modules/logger');
+const logger = require('./utilities/logger');
 
 const app = express();
 const PORT = process.env.PORT || 5000;

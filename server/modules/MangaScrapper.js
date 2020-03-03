@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const axios = require('axios');
 
 // external modules
-const logger = require('./modules/logger');
+const logger = require('../utilities/logger');
 
 class MangaScapper {
     constructor() {
