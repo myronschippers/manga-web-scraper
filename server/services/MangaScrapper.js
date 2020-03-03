@@ -53,7 +53,7 @@ class MangaScapper {
                 resultsList.push({
                     path: item.href,
                     title: item.title,
-                    thumbnail: item.children
+                    thumbnail: item.children[0] != null ? item.children[0].src : null,
                 });
             });
     
@@ -123,11 +123,11 @@ class MangaScapper {
 
     async search(searchWords) {
         try {
-            logger.label('SEARCHING');
+            // logger.label('SEARCHING');
             this._searchWords = searchWords;
-            logger.message('searchWords:', searchWords);
+            // logger.message('searchWords:', searchWords);
             const searchFormatted = this._makeSearchTermParam(searchWords);
-            logger.message('searchFormatted:', searchFormatted);
+            // logger.message('searchFormatted:', searchFormatted);
 
             if (!this._isLoaded) {
                 await this._loadScan();
@@ -135,24 +135,15 @@ class MangaScapper {
 
             const searchResults = await this._searchMangaSite(searchFormatted);
 
-            logger.message('SEARCH RESULTS:');
-            console.log(searchResults)
-            logger.end('SEARCHING');
+            await this._closeScanner();
+
+            // logger.message('SEARCH RESULTS:');
+            // console.log(searchResults)
+            // logger.end('SEARCHING');
             return searchResults;
         } catch(err) {
-            return err;
+            throw(err);
         }
-    }
-
-    //
-    // GETTERS & SETTERS
-    // ------------------------------
-
-    /**
-     * Only a getter is needed. External sources are not needed.
-     */
-    get isLoaded() {
-        return this._isLoaded;
     }
 
     //
