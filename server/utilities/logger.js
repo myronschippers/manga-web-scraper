@@ -52,10 +52,10 @@ class Logger {
         this._log(chalk.green(framedMsg));
     }
 
-    error(message) {
+    error(...errArgs) {
         const errHdg = this._createHeader('ERROR');
         const errFoot = this._createFooter('end error');
-        this._log(this._errorStyle(errHdg), message, this._errorStyle(errFoot));
+        this._log(this._errorStyle(errHdg), ...errArgs, this._errorStyle(errFoot));
     }
 
     end(label) {
