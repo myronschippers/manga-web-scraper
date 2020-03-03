@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+// routes
+const scrapperRouter = require('./routes/scapper.router');
+
 // external modules
 const logger = require('./utilities/logger');
 
@@ -12,6 +15,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Serve static files
 app.use(express.static('build'));
+
+// Register Routes
+app.use('/api/scraper', scrapperRouter);
 
 app.listen(PORT, () => {
     logger.edged(`Server is running on port: ${PORT}`);

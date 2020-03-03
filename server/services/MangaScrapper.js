@@ -115,8 +115,12 @@ class MangaScapper {
     }
 
     search(searchWords) {
+        logger.label('SEARCHING');
         this._searchWords = searchWords;
+        logger.message('searchWords:', searchWords);
         const searchParam = this._makeSearchTermParam(searchWords);
+        logger.message('searchParam:', searchParam);
+        logger.end('SEARCHING');
     }
 
     //
