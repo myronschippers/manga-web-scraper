@@ -1,0 +1,53 @@
+/* ------------------------------------------------------------
+** BASE ELEMENT STYLING
+** ------------------------------------------------------------ */
+/*
+#22223b - DRK Blue [BG]
+#425dd0 - Electric Blue
+#dcd9d9 - LT Grey
+#efe1e1 - Lt Creme
+
+#50536a - Grey Blue Mid/Drk
+
+#cbdaee - lt/mid grey
+*/
+
+html,
+body,
+#root {
+    /* #root, represents the application kickoff element */
+    height: 100%;
+}
+
+body {
+    background: #22223b;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
+
+/* ------------------------------------------------------------
+** SITE LAYOUT
+** ------------------------------------------------------------ */
+
+.site {
+	display: flex;
+	height: 100%; /* needed for IE10 */
+	min-height: 100%;
+	flex-direction: column;
+}
+
+.site-hd {
+	flex: 0 0 auto;
+}
+
+.site-bd {
+	flex: 1 0 auto;
+}
