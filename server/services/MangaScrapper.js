@@ -105,10 +105,10 @@ class MangaScapper {
         // await browser.close();
     }
 
-    async _closeScanner(chromePkg) {
+    async _closeScanner() {
         const {
             browser,
-        } = chromePkg;
+        } = this._headlessChrome;
 
         await browser.close();
 
@@ -154,19 +154,6 @@ class MangaScapper {
         return new MangaScapper();
     }
 }
-
-const searchWord = 'Solo Leveling';
-// axios({
-//     method: 'POST',
-//     url: `https://manganelo.com/getstorysearchjson?searchword=${searchWord}`,
-//     accept: `application/json, text/javascript, */*; q=0.01`,
-// })
-//     .then((searchResponse) => {
-//         logger.sample('SEARCH', searchResponse);
-//     })
-//     .catch((err) => {
-//         logger.error(err);
-//     });
 
 // tutorial
 // https://blog.bitsrc.io/web-scraping-with-puppeteer-e73e5fee7474
