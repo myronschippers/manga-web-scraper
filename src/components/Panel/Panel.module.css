@@ -1,0 +1,8 @@
+.panel {
+    background-color: #1f1f35;
+    border-left: 1px solid #333369;
+    border-bottom: 1px solid #333369;
+    box-shadow: inset -10px 10px 30px 4px rgb(0,0,0, 0.2);
+    padding: 20px;
+    border-radius: 20px;
+}
