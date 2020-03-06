@@ -61,48 +61,60 @@ class MangaScapper {
         });
 
         return resultsDataList;
+    
+        // await browser.close();
+    }
+
+    async _scrapeChapterList(mangaData) {
+        const {
+            page
+        } = this._headlessChrome;
 
         // SEARCH THUMBNAIL >> GOTO RESULT PAGE FOR CHAPTERS
     
-        // await page.goto(resultsDataList[0].path);
-        // const mangaChapterList = await page.evaluate(() => {
-        //     const chapterLinks = document.querySelectorAll('.row-content-chapter > li > a.chapter-name');
-        //     const chapterDataList = [];
-        //     chapterLinks.forEach((item) => {
-        //         const rawResultItemData = {
-        //             path: item.href,
-        //             chapterName: item.text,
-        //             title: item.title,
-        //         };
+        await page.goto(mangaData.path);
+        const mangaChapterList = await page.evaluate(() => {
+            const chapterLinks = document.querySelectorAll('.row-content-chapter > li > a.chapter-name');
+            const chapterDataList = [];
+            chapterLinks.forEach((item) => {
+                const rawResultItemData = {
+                    path: item.href,
+                    chapterName: item.text,
+                    title: item.title,
+                };
 
-        //         chapterDataList.push(rawResultItemData);
-        //     });
+                chapterDataList.push(rawResultItemData);
+            });
     
-        //     return Promise.resolve(chapterDataList);
-        // });
+            return Promise.resolve(chapterDataList);
+        });
 
-        // return mangaChapterList;
+        return mangaChapterList;
+    }
+
+    async _scrapePagesForChapter(mangaChapterList) {
+        const {
+            page
+        } = this._headlessChrome;
+        
+        mangaChapterList.forEach(async (item, index) => {
+            const chapterPath = item.path;
+            await page.goto(chapterPath);
+            const chapterImagesData = await page.evaluate(() => {
+                const chapterImageElem = document.querySelectorAll('.container-chapter-reader > img');
+                const chapterImageList = [];
+                chapterImageElem.forEach((item) => {
+                    chapterImageList.push({
+                        imgSrc: item.scroll,
+                        title: item.title,
+                    });
+                });
     
-        // mangaChapterList.forEach(async (item, index) => {
-        //     const chapterPath = item.path;
-        //     await page.goto(chapterPath);
-        //     const chapterImagesData = await page.evaluate(() => {
-        //         const chapterImageElem = document.querySelectorAll('.container-chapter-reader > img');
-        //         const chapterImageList = [];
-        //         chapterImageElem.forEach((item) => {
-        //             chapterImageList.push({
-        //                 imgSrc: item.scroll,
-        //                 title: item.title,
-        //             });
-        //         });
+                return Promise.resolve(chapterImageList);
+            });
     
-        //         return Promise.resolve(chapterImageList);
-        //     });
-    
-        //     mangaChapterList[index].images = chapterImagesData;
-        // });
-    
-        // await browser.close();
+            mangaChapterList[index].images = chapterImagesData;
+        });
     }
 
     async _closeScanner() {

@@ -41,10 +41,24 @@ class App2 extends Component {
     }
 
     clickSearch = (event) => {
-        console.log(this.state.searchTerm);
+        console.log({ term: this.state.searchTerm });
+        axios.put('/api/scraper/search', { term: this.state.searchTerm })
+            .then((searchSuccess) => {
+                this.setState({
+                    results: searchSuccess.data,
+                })
+            })
+            .catch((searchErr) => {
+                console.log(searchErr);
+            });
+        // this.props.dispatch({
+        //     type: 'SEARCH_MANGA',
+        //     payload: this.state.searchTerm,
+        // });
     }
 
     render() {
+        const resultsElements = this.state.results.map((item) => <p>{JSON.stringify(item)}</p>);
         return (
             <div className="site">
                 <div className="site-hd">
@@ -80,6 +94,8 @@ class App2 extends Component {
                                 />
                             </FormControl>
                             APPLICATION BODY
+                            <h2>RESULTS:</h2>
+                            {resultsElements}
                         </Panel>
 
                     </div>
