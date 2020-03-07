@@ -42,11 +42,11 @@ class App2 extends Component {
 
     clickSearch = (event) => {
         console.log({ term: this.state.searchTerm });
-        axios.put('/api/scraper/search', { term: this.state.searchTerm })
+        axios.post('/api/scraper/search', { term: this.state.searchTerm })
             .then((searchSuccess) => {
                 this.setState({
                     results: searchSuccess.data,
-                })
+                });
             })
             .catch((searchErr) => {
                 console.log(searchErr);
@@ -58,7 +58,10 @@ class App2 extends Component {
     }
 
     render() {
-        const resultsElements = this.state.results.map((item) => <p>{JSON.stringify(item)}</p>);
+        const resultsElements = this.state.results.map((item) => {
+            return <p>{JSON.stringify(item)}</p>;
+        });
+        
         return (
             <div className="site">
                 <div className="site-hd">
