@@ -46,6 +46,11 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Open Sans Condensed', 'Helvetica', sans-serif;
 }
 
+img {
+    max-width: 100%;
+    display: inline-block;
+}
+
 /* ------------------------------------------------------------
 ** SITE LAYOUT
 ** ------------------------------------------------------------ */

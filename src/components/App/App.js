@@ -8,6 +8,8 @@ import {
     InputAdornment,
     OutlinedInput,
     IconButton,
+    Grid,
+    Button,
 } from '@material-ui/core';
 import {
     Search,
@@ -44,6 +46,7 @@ class App2 extends Component {
         console.log({ term: this.state.searchTerm });
         axios.post('/api/scraper/search', { term: this.state.searchTerm })
             .then((searchSuccess) => {
+                console.log('searchSuccess:', searchSuccess);
                 this.setState({
                     results: searchSuccess.data,
                 });
@@ -58,10 +61,26 @@ class App2 extends Component {
     }
 
     render() {
-        const resultsElements = this.state.results.map((item) => {
-            return <p>{JSON.stringify(item)}</p>;
+        const resultsElements = this.state.results.map((item, index) => {
+            return (
+                <Grid item xs={4} key={index}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={7}>
+                            <img src={item.thumbnail} alt={`${item.title} thumbnail`} />
+                        </Grid>
+                        <Grid item xs={5}>
+                            <h3>{item.title}</h3>
+                            <a href={item.path}>Go To Series</a>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button variant="contained">Save Series</Button>
+                        </Grid>
+                    </Grid>
+                    
+                </Grid>
+            );
         });
-        
+
         return (
             <div className="site">
                 <div className="site-hd">
@@ -98,7 +117,10 @@ class App2 extends Component {
                             </FormControl>
                             APPLICATION BODY
                             <h2>RESULTS:</h2>
-                            {resultsElements}
+
+                            <Grid container spacing={3}>
+                                {resultsElements}
+                            </Grid>
                         </Panel>
 
                     </div>

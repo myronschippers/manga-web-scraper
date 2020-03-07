@@ -29,9 +29,7 @@ router.post('/search', (req, res, next) => {
             logger.success('POST /api/scrape/search:', results);
 
             res.status(201)
-            res.send({
-                data: results
-            });
+            res.send(results);
         })
         .catch((err) => {
             logger.error('POST /api/scrape/search:', err);

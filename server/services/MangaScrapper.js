@@ -96,7 +96,7 @@ class MangaScapper {
         const {
             page
         } = this._headlessChrome;
-        
+
         mangaChapterList.forEach(async (item, index) => {
             const chapterPath = item.path;
             await page.goto(chapterPath);
@@ -133,6 +133,16 @@ class MangaScapper {
         return searchParam.toLowerCase();
     }
 
+    async _checkBrowser() {
+        if (!this._isLoaded) {
+            await this._loadScan();
+        }
+    }
+
+    //
+    // PUBLIC METHODS
+    // ------------------------------
+
     async search(searchWords) {
         try {
             // logger.label('SEARCHING');
@@ -141,9 +151,7 @@ class MangaScapper {
             const searchFormatted = this._makeSearchTermParam(searchWords);
             // logger.message('searchFormatted:', searchFormatted);
 
-            if (!this._isLoaded) {
-                await this._loadScan();
-            }
+            await this._checkBrowser();
 
             const searchResults = await this._searchMangaSite(searchFormatted);
 
@@ -157,6 +165,24 @@ class MangaScapper {
             throw(err);
         }
     }
+
+    async chaptersForSeries(seriesData) {
+        try {
+            await this._checkBrowser();
+
+            const chapterCollection = await this._scrapeChapterList(seriesData);
+
+            return chapterCollection;
+        } catch(errSeries) {
+            throw(errSeries);
+        }
+    }
+
+    // TODO: Need to make function get all of the pages of a single chapter
+    async pagesForChapter(chapterData) {}
+
+    // TODO: Need to make the function get all pages for all chapters
+    async pagesForChapterCollection(chapterCollection) {}
 
     //
     // KICKOFF FOR SINGLETON
