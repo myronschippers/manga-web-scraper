@@ -12,6 +12,11 @@ import {
     Button,
 } from '@material-ui/core';
 import {
+    ThemeProvider,
+    createStyles,
+    withStyles,
+} from '@material-ui/core/styles';
+import {
     Search,
 } from '@material-ui/icons';
 
@@ -23,6 +28,47 @@ import './app.css';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Panel from '../Panel/Panel';
+
+// #22223b - DRK Blue [BG]
+// #425dd0 - Electric Blue
+// #c4d0d7 - LT Grey (with a little blue)
+// #efe1e1 - Lt Creme
+
+// #e63d78 - highlight magenta-ish
+
+// #50536a - Grey Blue Mid/Drk
+
+// #cbdaee - lt/mid grey
+
+// SETUP MUI THEME
+const themesStyles = theme => createStyles({
+    palette: {
+        type: 'dark',
+
+        primary: {
+            // light: will be calculated from palette.primary.main,
+            main: '#425dd0',
+            // dark: will be calculated from palette.primary.main,
+            // contrastText: will be calculated to contrast with palette.primary.main
+        },
+
+        // secondary: {
+            // light: '#0066ff',
+            // main: '#0044ff',
+            // dark: will be calculated from palette.secondary.main,
+            // contrastText: '#ffcc00',
+        // },
+
+        // Used by `getContrastText()` to maximize the contrast between
+        // the background and the text.
+        // contrastThreshold: 3,
+
+        // Used by the functions below to shift a color's luminance by approximately
+        // two indexes within its tonal palette.
+        // E.g., shift from Red 500 to Red 300 or Red 700.
+        // tonalOffset: 0.2,
+    }
+});
 
 class App2 extends Component {
     state = {
@@ -82,55 +128,57 @@ class App2 extends Component {
         });
 
         return (
-            <div className="site">
-                <div className="site-hd">
-                    <Header primeHdg={'Manga Scraper'} />
-                </div>
-                <div className="site-bd">
-                    <div className="container">
-                        <Panel>
-                            <FormControl variant="outlined">
-                                <InputLabel
-                                    htmlFor="outlined-adornment-password"
-                                >
-                                    Search
-                                </InputLabel>
-                                <OutlinedInput
-                                    id="outlined-adornment-password"
-                                    type="text"
-                                    value={this.state.searchTerm}
-                                    onChange={this.handleFieldChange('searchTerm')}
-                                    onKeyPress={this.handleFieldPressEnter('clickSearch')}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="submit search"
-                                                onClick={this.clickSearch}
-                                                edge="end"
-                                            >
-                                                <Search />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    labelWidth={70}
-                                />
-                            </FormControl>
-                            APPLICATION BODY
-                            <h2>RESULTS:</h2>
+            <ThemeProvider>
+                <div className="site">
+                    <div className="site-hd">
+                        <Header primeHdg={'Manga Scraper'} />
+                    </div>
+                    <div className="site-bd">
+                        <div className="container">
+                            <Panel>
+                                <FormControl variant="outlined">
+                                    <InputLabel
+                                        htmlFor="outlined-adornment-password"
+                                    >
+                                        Search
+                                    </InputLabel>
+                                    <OutlinedInput
+                                        id="outlined-adornment-password"
+                                        type="text"
+                                        value={this.state.searchTerm}
+                                        onChange={this.handleFieldChange('searchTerm')}
+                                        onKeyPress={this.handleFieldPressEnter('clickSearch')}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="submit search"
+                                                    onClick={this.clickSearch}
+                                                    edge="end"
+                                                >
+                                                    <Search />
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        labelWidth={70}
+                                    />
+                                </FormControl>
+                                APPLICATION BODY
+                                <h2>RESULTS:</h2>
 
-                            <Grid container spacing={3}>
-                                {resultsElements}
-                            </Grid>
-                        </Panel>
+                                <Grid container spacing={3}>
+                                    {resultsElements}
+                                </Grid>
+                            </Panel>
 
+                        </div>
+                    </div>
+                    <div className="site-ft">
+                        <Footer />
                     </div>
                 </div>
-                <div className="site-ft">
-                    <Footer />
-                </div>
-            </div>
+            </ThemeProvider>
         );
     }
 }
 
-export default App2;
+export default withStyles(themesStyles)(App2);
