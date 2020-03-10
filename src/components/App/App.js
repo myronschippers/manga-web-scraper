@@ -13,8 +13,7 @@ import {
 } from '@material-ui/core';
 import {
     ThemeProvider,
-    createStyles,
-    withStyles,
+    createMuiTheme,
 } from '@material-ui/core/styles';
 import {
     Search,
@@ -41,16 +40,16 @@ import Panel from '../Panel/Panel';
 // #cbdaee - lt/mid grey
 
 // SETUP MUI THEME
-const themesStyles = theme => createStyles({
+const theme = createMuiTheme({
     palette: {
         type: 'dark',
 
-        primary: {
+        // primary: {
             // light: will be calculated from palette.primary.main,
-            main: '#425dd0',
-            // dark: will be calculated from palette.primary.main,
+            // main: '#425dd0',
+            // dark: '#425dd0',// will be calculated from palette.primary.main,
             // contrastText: will be calculated to contrast with palette.primary.main
-        },
+        // },
 
         // secondary: {
             // light: '#0066ff',
@@ -128,7 +127,7 @@ class App2 extends Component {
         });
 
         return (
-            <ThemeProvider>
+            <ThemeProvider theme={theme}>
                 <div className="site">
                     <div className="site-hd">
                         <Header primeHdg={'Manga Scraper'} />
@@ -181,4 +180,4 @@ class App2 extends Component {
     }
 }
 
-export default withStyles(themesStyles)(App2);
+export default App2;
