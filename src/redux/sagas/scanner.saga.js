@@ -17,16 +17,21 @@ function* scannerSearch(action) {
     // allow the server session to recognize the user
     yield axios.post('api/user/login', action.payload, config);
 
-    const results = yield axios.post('/api/scraper/search', { term: this.state.searchTerm })
-            .then((searchSuccess) => {
-                console.log('searchSuccess:', searchSuccess);
-                this.setState({
-                    results: searchSuccess.data,
-                });
-            })
-            .catch((searchErr) => {
-                console.log(searchErr);
-            });
+    const results = yield axios.post(
+        '/api/scraper/search',
+        {
+          term: this.state.searchTerm
+        }
+      )
+      .then((searchSuccess) => {
+        console.log('searchSuccess:', searchSuccess);
+        this.setState({
+          results: searchSuccess.data,
+        });
+      })
+      .catch((searchErr) => {
+        console.log(searchErr);
+      });
     
     // after the user has logged in
     // get the user information from the server
@@ -38,7 +43,7 @@ function* scannerSearch(action) {
 }
 
 function* scannerSaga() {
-  yield takeLatest('API_SEARCH', scannerSearch);
+  yield takeLatest('API_SEARCH_MANGA', scannerSearch);
 }
 
 export default scannerSaga;
