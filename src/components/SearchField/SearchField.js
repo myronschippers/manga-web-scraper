@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
 // Material-UI Components
 import {
@@ -33,16 +32,16 @@ class SearchField extends Component {
 
   clickSearch = (event) => {
     console.log({ term: this.state.searchTerm });
-    axios.post('/api/scraper/search', { term: this.state.searchTerm })
-      .then((searchSuccess) => {
-        console.log('searchSuccess:', searchSuccess);
-        this.setState({
-          results: searchSuccess.data,
-        });
-      })
-      .catch((searchErr) => {
-        console.log(searchErr);
-      });
+    // axios.post('/api/scraper/search', { term: this.state.searchTerm })
+    //   .then((searchSuccess) => {
+    //     console.log('searchSuccess:', searchSuccess);
+    //     this.setState({
+    //       results: searchSuccess.data,
+    //     });
+    //   })
+    //   .catch((searchErr) => {
+    //     console.log(searchErr);
+    //   });
     this.props.dispatch({
       type: 'API_SEARCH_MANGA',
       payload: this.state.searchTerm,
