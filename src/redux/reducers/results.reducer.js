@@ -1,11 +1,11 @@
 const resultsReducer = (state = [], action) => {
   switch (action.type) {
     case 'SET_RESULTS':
-    return action.payload;
+      return action.payload;
     case 'CLEAR_RESULTS':
-    return [];
+      return [];
     default:
-    return state;
+      return state;
   }
 };
 
