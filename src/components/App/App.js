@@ -6,6 +6,7 @@ import mapStoreToProps from '../../redux/mapStoreToProps';
 import {
     Grid,
     Button,
+    LinearProgress,
 } from '@material-ui/core';
 import {
     ThemeProvider,
@@ -88,6 +89,7 @@ class App extends Component {
                 </Grid>
             );
         });
+        const loadingSearchResults = <Grid item xs={12}><LinearProgress color="secondary" /></Grid>;
 
         return (
             <ThemeProvider theme={theme}>
@@ -105,7 +107,10 @@ class App extends Component {
                                 <h2>RESULTS:</h2>
 
                                 <Grid container spacing={3}>
-                                    {resultsElements}
+                                    {this.props.store.searchLoading ?
+                                        loadingSearchResults :
+                                        resultsElements
+                                    }
                                 </Grid>
                             </Panel>
 
