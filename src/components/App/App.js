@@ -4,11 +4,6 @@ import mapStoreToProps from '../../redux/mapStoreToProps';
 
 // Material-UI Components
 import {
-    Grid,
-    Button,
-    LinearProgress,
-} from '@material-ui/core';
-import {
     ThemeProvider,
     createMuiTheme,
 } from '@material-ui/core/styles';
@@ -22,6 +17,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Panel from '../Panel/Panel';
 import SearchField from '../SearchField/SearchField';
+import SearchResultsList from '../SearchResultsList/SearchResultsList';
 
 // #22223b - DRK Blue [BG]
 // #425dd0 - Electric Blue
@@ -65,31 +61,7 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
-    state = {
-        searchTerm: '',
-        results: [],
-    };
-
     render() {
-        const resultsElements = this.props.store.results.map((item, index) => {
-            return (
-                <Grid item xs={4} key={index}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={7}>
-                            <img src={item.thumbnail} alt={`${item.title} thumbnail`} />
-                        </Grid>
-                        <Grid item xs={5}>
-                            <h3>{item.title}</h3>
-                            <a href={item.path}>Go To Series</a>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button variant="contained">Save Series</Button>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            );
-        });
-        const loadingSearchResults = <Grid item xs={12}><LinearProgress color="secondary" /></Grid>;
 
         return (
             <ThemeProvider theme={theme}>
@@ -104,14 +76,8 @@ class App extends Component {
                                     <SearchField />
                                 </div>
                                 APPLICATION BODY
-                                <h2>RESULTS:</h2>
 
-                                <Grid container spacing={3}>
-                                    {this.props.store.searchLoading ?
-                                        loadingSearchResults :
-                                        resultsElements
-                                    }
-                                </Grid>
+                                <SearchResultsList />
                             </Panel>
 
                         </div>
