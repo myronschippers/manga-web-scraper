@@ -7,25 +7,13 @@ import {
   Button,
   LinearProgress,
 } from '@material-ui/core';
+import SearchResultsItem from '../SearchResultsItem/SearchResultsItem';
 
 class SearchResultsList extends Component {
   render() {
     const resultsElements = this.props.store.results.map((item, index) => {
       return (
-        <Grid item xs={4} key={index}>
-          <Grid container spacing={3}>
-            <Grid item xs={7}>
-              <img src={item.thumbnail} alt={`${item.title} thumbnail`} />
-            </Grid>
-            <Grid item xs={5}>
-              <h3>{item.title}</h3>
-              <a href={item.path}>Go To Series</a>
-            </Grid>
-            <Grid item xs={12}>
-              <Button variant="contained">Save Series</Button>
-            </Grid>
-          </Grid>
-        </Grid>
+        <SearchResultsItem item={item} key={index} />
       );
     });
     const loadingSearchResults = (
