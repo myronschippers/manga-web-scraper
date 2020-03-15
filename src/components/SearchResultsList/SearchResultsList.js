@@ -4,7 +4,6 @@ import mapStoreToProps from '../../redux/mapStoreToProps';
 
 import {
   Grid,
-  Button,
   LinearProgress,
 } from '@material-ui/core';
 import SearchResultsItem from '../SearchResultsItem/SearchResultsItem';

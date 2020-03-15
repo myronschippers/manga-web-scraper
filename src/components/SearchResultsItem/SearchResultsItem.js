@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import mapStoreToProps from '../../redux/mapStoreToProps';
 
 import {
   Grid,
@@ -6,6 +8,13 @@ import {
 } from '@material-ui/core';
 
 class SearchResultsItem extends Component {
+  saveSeries = (event) => {
+    this.props.dispatch({
+      type: 'API_SAVE_SERIES',
+      payload: this.props.item
+    });
+  }
+
   render() {
     const {
       item,
@@ -22,7 +31,7 @@ class SearchResultsItem extends Component {
             <a href={item.path}>Go To Series</a>
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained">Save Series</Button>
+            <Button variant="contained" onClick={this.saveSeries}>Save Series</Button>
           </Grid>
         </Grid>
       </Grid>
@@ -30,4 +39,4 @@ class SearchResultsItem extends Component {
   }
 }
 
-export default SearchResultsItem;
+export default connect(mapStoreToProps)(SearchResultsItem);
