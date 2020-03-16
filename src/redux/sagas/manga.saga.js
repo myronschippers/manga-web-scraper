@@ -10,7 +10,7 @@ function* mangaSeriesSave(action) {
     yield axios.post('/api/manga/series', seriesData);
     yield axios.get('/api/manga/series');
 
-    yield put({ type: 'HIDE_SEARCH_LOADING' });
+    yield put({ type: 'SET_SERIES' });
   } catch (err) {
     console.log('Error with search:', err);
     yield put({ type: 'RAISE_ERROR', payload: 'There was an error with your search.' });

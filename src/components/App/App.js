@@ -18,6 +18,7 @@ import Footer from '../Footer/Footer';
 import Panel from '../Panel/Panel';
 import SearchField from '../SearchField/SearchField';
 import SearchResultsList from '../SearchResultsList/SearchResultsList';
+import SavedSeries from '../SavedSeries/SavedSeries';
 
 // #22223b - DRK Blue [BG]
 // #425dd0 - Electric Blue
@@ -70,6 +71,10 @@ class App extends Component {
                         <Header primeHdg={'Manga Scraper'} />
                     </div>
                     <div className="site-bd">
+                        <div className="container">
+                            <SavedSeries />
+                        </div>
+
                         <div className="container">
                             <Panel>
                                 <div>

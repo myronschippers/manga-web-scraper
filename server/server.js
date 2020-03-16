@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 // routes
 const scrapperRouter = require('./routes/scapper.router');
+const mangaRouter = require('./routes/manga.router');
 
 // external modules
 const logger = require('./utilities/logger');
@@ -18,6 +19,7 @@ app.use(express.static('build'));
 
 // Register Routes
 app.use('/api/scraper', scrapperRouter);
+app.use('/api/manga', mangaRouter);
 
 app.listen(PORT, () => {
     logger.edged(`Server is running on port: ${PORT}`);
