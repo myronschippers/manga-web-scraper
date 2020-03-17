@@ -4,7 +4,7 @@ const axios = require('axios');
 // external modules
 const logger = require('../utilities/logger');
 
-class MangaScaper {
+class MangaScraper {
     constructor() {
         this._baseUrl = 'https://manganelo.com/';
         this._searchParam = 'search/';
@@ -189,11 +189,11 @@ class MangaScaper {
     // ------------------------------
 
     static createSingleton() {
-        return new MangaScaper();
+        return new MangaScraper();
     }
 }
 
 // tutorial
 // https://blog.bitsrc.io/web-scraping-with-puppeteer-e73e5fee7474
 
-module.exports = MangaScaper.createSingleton();
+module.exports = MangaScraper.createSingleton();
