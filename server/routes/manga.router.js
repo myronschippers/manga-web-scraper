@@ -1,6 +1,5 @@
 const express = require('express');
-// TODO: Create a Pool when this is ready to integrate with 
-// const pool = require('../modules/pool');
+const pool = require('../modules/pool');
 
 const router = express.Router();
 // const mangaScrapper = require('../services/MangaScrapper');
@@ -14,9 +13,23 @@ router.get('/series', (req, res, next) => {
 
 router.post('/series', (req, res, next) => {
   const seriesData = req.body;
-  seriesList.push(seriesData);
+  const queryText = `INSERT INTO "series" ("path", "thumbnail", "title", "author", "created_at")
+  VALUES $1, $2, $3, $4, current_timestamp;`;
+  const {
+    path,
+    thumbnail,
+    title,
+    author,
+  } = seriesData;
 
-  res.sendStatus(201);
+  pool.query(queryText, [path, thumbnail, title, author])
+    .then((response) => {
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.log('manga route series POST error: ', err);
+      res.sendStatus(500);
+    });
 });
 
 module.exports = router;
