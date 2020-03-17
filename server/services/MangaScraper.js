@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-const axios = require('axios');
 
 // external modules
 const logger = require('../utilities/logger');
@@ -50,10 +49,13 @@ class MangaScraper {
             const searchResults = document.querySelectorAll(`.search-story-item > a`);
             const resultsList = [];
             searchResults.forEach((item) => {
+                const elemSearchItem = item.parentElement;
+                const elemAuthor = elemSearchItem.querySelector('.item-author');
                 resultsList.push({
                     path: item.href,
                     title: item.title,
                     thumbnail: item.children[0] != null ? item.children[0].src : null,
+                    author: elemAuthor.title,
                 });
             });
 
