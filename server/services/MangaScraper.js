@@ -4,7 +4,7 @@ const axios = require('axios');
 // external modules
 const logger = require('../utilities/logger');
 
-class MangaScapper {
+class MangaScaper {
     constructor() {
         this._baseUrl = 'https://manganelo.com/';
         this._searchParam = 'search/';
@@ -45,7 +45,7 @@ class MangaScapper {
         await page.goto(`https://manganelo.com/search/${formattedSearchTerm}`);
 
         logger.label('SEARCH PAGE LOADED');
-    
+
         const resultsDataList = await page.evaluate(() => {
             const searchResults = document.querySelectorAll(`.search-story-item > a`);
             const resultsList = [];
@@ -56,12 +56,12 @@ class MangaScapper {
                     thumbnail: item.children[0] != null ? item.children[0].src : null,
                 });
             });
-    
+
             return Promise.resolve(resultsList);
         });
 
         return resultsDataList;
-    
+
         // await browser.close();
     }
 
@@ -71,7 +71,7 @@ class MangaScapper {
         } = this._headlessChrome;
 
         // SEARCH THUMBNAIL >> GOTO RESULT PAGE FOR CHAPTERS
-    
+
         await page.goto(mangaData.path);
         const mangaChapterList = await page.evaluate(() => {
             const chapterLinks = document.querySelectorAll('.row-content-chapter > li > a.chapter-name');
@@ -85,7 +85,7 @@ class MangaScapper {
 
                 chapterDataList.push(rawResultItemData);
             });
-    
+
             return Promise.resolve(chapterDataList);
         });
 
@@ -109,10 +109,10 @@ class MangaScapper {
                         title: item.title,
                     });
                 });
-    
+
                 return Promise.resolve(chapterImageList);
             });
-    
+
             mangaChapterList[index].images = chapterImagesData;
         });
     }
@@ -189,11 +189,11 @@ class MangaScapper {
     // ------------------------------
 
     static createSingleton() {
-        return new MangaScapper();
+        return new MangaScaper();
     }
 }
 
 // tutorial
 // https://blog.bitsrc.io/web-scraping-with-puppeteer-e73e5fee7474
 
-module.exports = MangaScapper.createSingleton();
+module.exports = MangaScaper.createSingleton();

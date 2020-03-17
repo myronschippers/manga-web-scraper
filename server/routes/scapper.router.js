@@ -3,7 +3,7 @@ const express = require('express');
 // const pool = require('../modules/pool');
 
 const router = express.Router();
-const mangaScrapper = require('../services/MangaScrapper');
+const mangaScrapper = require('../services/MangaScraper');
 const logger = require('../utilities/logger');
 
 /**
