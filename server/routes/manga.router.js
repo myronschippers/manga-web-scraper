@@ -8,13 +8,22 @@ const router = express.Router();
 const seriesList = [];
 
 router.get('/series', (req, res, next) => {
-  res.send(seriesList);
+  const queryText = `SELECT * FROM "series";`
+
+  pool.query(queryText)
+    .then((response) => {
+      res.send(response.rows);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
 });
 
 router.post('/series', (req, res, next) => {
   const seriesData = req.body;
   const queryText = `INSERT INTO "series" ("path", "thumbnail", "title", "author", "created_at")
-  VALUES $1, $2, $3, $4, current_timestamp;`;
+  VALUES ($1, $2, $3, $4, current_timestamp);`;
   const {
     path,
     thumbnail,

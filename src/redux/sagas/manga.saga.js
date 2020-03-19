@@ -8,17 +8,28 @@ function* mangaSeriesSave(action) {
       ...action.payload
     };
     yield axios.post('/api/manga/series', seriesData);
-    yield axios.get('/api/manga/series');
 
-    yield put({ type: 'SET_SERIES' });
+    yield put({ type: 'API_FETCH_SERIES' });
   } catch (err) {
-    console.log('Error with search:', err);
-    yield put({ type: 'RAISE_ERROR', payload: 'There was an error with your search.' });
+    console.log('Error with series save:', err);
+    yield put({ type: 'RAISE_ERROR', payload: 'There was an error saving your series.' });
+  }
+}
+
+function* mangaSeriesFetch(action) {
+  try {
+    const seriesResp = yield axios.get('/api/manga/series');
+
+    yield put({ type: 'SET_SERIES', payload: seriesResp.data });
+  } catch(err) {
+    console.log('Error with series get:', err);
+    yield put({ type: 'RAISE_ERROR', payload: 'There was an error getting saved series.' });
   }
 }
 
 function* mangaSaga() {
   yield takeLatest('API_SAVE_SERIES', mangaSeriesSave);
+  yield takeLatest('API_FETCH_SERIES', mangaSeriesFetch);
 }
 
 export default mangaSaga;
