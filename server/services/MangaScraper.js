@@ -48,14 +48,17 @@ class MangaScraper {
         const resultsDataList = await page.evaluate(() => {
             const searchResults = document.querySelectorAll(`.search-story-item > a`);
             const resultsList = [];
+
             searchResults.forEach((item) => {
                 const elemSearchItem = item.parentElement;
                 const elemAuthor = elemSearchItem.querySelector('.item-author');
+                let author = elemAuthor != null ? elemAuthor.title : 'not available';
+
                 resultsList.push({
                     path: item.href,
                     title: item.title,
                     thumbnail: item.children[0] != null ? item.children[0].src : null,
-                    author: elemAuthor.title,
+                    author
                 });
             });
 
