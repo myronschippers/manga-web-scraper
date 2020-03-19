@@ -7,23 +7,20 @@ import {
   Button,
 } from '@material-ui/core';
 
+import SavedSeriesItem from '../SavedSeriesItem/SavedSeriesItem';
+
 class SavedSeries extends Component {
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'API_FETCH_SERIES'
+    });
+  }
+
   render() {
     const seriesElemList = this.props.store.series.map((item, index) => {
       return (
-        <Grid item xs={2}>
-          <Grid container spacing={3}>
-            <Grid item xs={7}>
-              <img src={item.thumbnail} alt={`${item.title} thumbnail`} />
-            </Grid>
-            <Grid item xs={5}>
-              <h3>{item.title}</h3>
-              <a href={item.path}>Go To Series</a>
-            </Grid>
-            <Grid item xs={12}>
-              <Button variant="contained" onClick={this.saveSeries}>Save Series</Button>
-            </Grid>
-          </Grid>
+        <Grid item xs={3} key={index}>
+          <SavedSeriesItem item={item} />
         </Grid>
       );
     });
