@@ -4,7 +4,6 @@ import mapStoreToProps from '../../redux/mapStoreToProps';
 
 import {
   Grid,
-  Button,
 } from '@material-ui/core';
 
 import SavedSeriesItem from '../SavedSeriesItem/SavedSeriesItem';
