@@ -1,16 +1,10 @@
 const express = require('express');
-const pool = require('../modules/pool');
+const mangaSeriesDb = require('../services/MangaSeriesDb');
 
 const router = express.Router();
-// const mangaScrapper = require('../services/MangaScrapper');
-// const logger = require('../utilities/logger');
-
-const seriesList = [];
 
 router.get('/series', (req, res, next) => {
-  const queryText = `SELECT * FROM "series";`
-
-  pool.query(queryText)
+  mangaSeriesDb.fetchAllSeries()
     .then((response) => {
       res.send(response.rows);
     })
@@ -22,16 +16,8 @@ router.get('/series', (req, res, next) => {
 
 router.post('/series', (req, res, next) => {
   const seriesData = req.body;
-  const queryText = `INSERT INTO "series" ("path", "thumbnail", "title", "author", "created_at")
-  VALUES ($1, $2, $3, $4, current_timestamp);`;
-  const {
-    path,
-    thumbnail,
-    title,
-    author,
-  } = seriesData;
 
-  pool.query(queryText, [path, thumbnail, title, author])
+  mangaSeriesDb.saveSeries(seriesData)
     .then((response) => {
       res.sendStatus(201);
     })

@@ -177,6 +177,8 @@ class MangaScraper {
 
             const chapterCollection = await this._scrapeChapterList(seriesData);
 
+            await this._closeScanner();
+
             return chapterCollection;
         } catch(errSeries) {
             throw(errSeries);

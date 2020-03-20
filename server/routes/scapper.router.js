@@ -4,16 +4,30 @@ const express = require('express');
 
 const router = express.Router();
 const mangaScraper = require('../services/MangaScraper');
+const mangaSeriesDb = require('../services/MangaSeriesDb');
 const logger = require('../utilities/logger');
 
 /**
  * GET route template
  */
-router.get('/', (req, res, next) => {
-    res.status(500);
-    res.send({
-        message: 'Route has not been completed yet.'
-    });
+router.get('/chapters/:seriesId', (req, res, next) => {
+    // const seriesId = req.params.seriesId;
+    mangaSeriesDb.fetchSeries(req.params.seriesId)
+        .then((response) => {
+            const matchedSeries = response.rows[0];
+            mangaScraper.chaptersForSeries(matchedSeries)
+            .then((response) => {
+                res.send(response);
+            })
+            .catch((err) => {
+                console.log('Error scraping series chapters:', err);
+                res.sendStatus(500);
+            });
+        })
+        .catch((err) => {
+            console.log('Error fetching series chapters:', err);
+            res.sendStatus(500);
+        });
 });
 
 /**
