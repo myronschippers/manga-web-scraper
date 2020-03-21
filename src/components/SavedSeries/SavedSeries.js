@@ -42,4 +42,4 @@ class SavedSeries extends Component {
   }
 }
 
-export default connect(mapStoreToProps)(SavedSeries);
+export default connect(mapStoreToProps('series'))(SavedSeries);

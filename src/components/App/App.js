@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import mapStoreToProps from '../../redux/mapStoreToProps';
 
 // Material-UI Components
 import {
@@ -96,4 +94,4 @@ class App extends Component {
     }
 }
 
-export default connect(mapStoreToProps)(App);
+export default App;

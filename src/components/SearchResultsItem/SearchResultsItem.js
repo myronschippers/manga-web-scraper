@@ -39,4 +39,4 @@ class SearchResultsItem extends Component {
   }
 }
 
-export default connect(mapStoreToProps)(SearchResultsItem);
+export default connect()(SearchResultsItem);

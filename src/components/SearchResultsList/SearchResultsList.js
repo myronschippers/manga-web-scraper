@@ -44,4 +44,4 @@ class SearchResultsList extends Component {
   }
 }
 
-export default connect(mapStoreToProps)(SearchResultsList);
+export default connect(mapStoreToProps('results'))(SearchResultsList);
