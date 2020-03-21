@@ -12,7 +12,12 @@ function* mangaSeriesSave(action) {
     yield put({ type: 'API_FETCH_SERIES' });
   } catch (err) {
     console.log('Error with series save:', err);
-    yield put({ type: 'RAISE_ERROR', payload: 'There was an error saving your series.' });
+    yield put({
+      type: 'RAISE_ERROR',
+      payload: {
+        msg: 'There was an error saving your series.'
+      }
+    });
   }
 }
 
@@ -23,7 +28,12 @@ function* mangaSeriesFetch(action) {
     yield put({ type: 'SET_SERIES', payload: seriesResp.data });
   } catch(err) {
     console.log('Error with series get:', err);
-    yield put({ type: 'RAISE_ERROR', payload: 'There was an error getting saved series.' });
+    yield put({
+      type: 'RAISE_ERROR',
+      payload: {
+        msg: 'There was an error getting saved series.'
+      }
+    });
   }
 }
 

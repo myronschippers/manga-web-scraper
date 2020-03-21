@@ -8,13 +8,18 @@ function* scannerSearch(action) {
     const searchData = {
       term: action.payload
     };
-    const response = yield axios.post('/api/scraper/search', searchData);
+    const response = yield axios.post('/api/scraper/searchs', searchData);
 
     yield put({type: 'SET_RESULTS', payload: response.data});
     yield put({ type: 'HIDE_SEARCH_LOADING' });
   } catch (err) {
     console.log('Error with search:', err);
-    yield put({ type: 'RAISE_ERROR', payload: 'There was an error with your search.' });
+    yield put({
+      type: 'RAISE_ERROR',
+      payload: {
+        msg: 'There was an error with your search.'
+      }
+    });
   }
 }
 
