@@ -11,6 +11,10 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    backgroundColor: '#252b52',
+    borderRadius: '0 0 5px 5px',
+    borderTop: '3px solid #425dd0',
+    boxShadow: '0 6px 4px rgb(0,0,0, 0.4)',
   },
   details: {
     display: 'flex',
