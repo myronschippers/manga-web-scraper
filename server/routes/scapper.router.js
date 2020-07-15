@@ -16,13 +16,13 @@ router.get('/chapters/:seriesId', (req, res, next) => {
         .then((response) => {
             const matchedSeries = response.rows[0];
             mangaScraper.chaptersForSeries(matchedSeries)
-            .then((response) => {
-                res.send(response);
-            })
-            .catch((err) => {
-                console.log('Error scraping series chapters:', err);
-                res.sendStatus(500);
-            });
+              .then((response) => {
+                  res.send(response);
+              })
+              .catch((err) => {
+                  console.log('Error scraping series chapters:', err);
+                  res.sendStatus(500);
+              });
         })
         .catch((err) => {
             console.log('Error fetching series chapters:', err);

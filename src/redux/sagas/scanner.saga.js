@@ -8,7 +8,7 @@ function* scannerSearch(action) {
     const searchData = {
       term: action.payload
     };
-    const response = yield axios.post('/api/scraper/searchs', searchData);
+    const response = yield axios.post('/api/scraper/search', searchData);
 
     yield put({type: 'SET_RESULTS', payload: response.data});
     yield put({ type: 'HIDE_SEARCH_LOADING' });
