@@ -41,9 +41,10 @@ class MangaScraper {
 
         // enter url in page and navigate to that page
         // Navigates to the search results for the 
-        await page.goto(`https://manganelo.com/search/${formattedSearchTerm}`);
+        await page.goto(`https://manganelo.com/search/story/${formattedSearchTerm}`);
 
         logger.label('SEARCH PAGE LOADED');
+        logger.message(formattedSearchTerm);
 
         const resultsDataList = await page.evaluate(() => {
             const searchResults = document.querySelectorAll(`.search-story-item > a`);
