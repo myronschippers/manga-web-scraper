@@ -1,5 +1,6 @@
 const express = require('express');
 const mangaSeriesDb = require('../services/MangaSeriesDb');
+const logger = require('../utilities/logger');
 
 const router = express.Router();
 
@@ -19,6 +20,7 @@ router.post('/series', (req, res, next) => {
 
   mangaSeriesDb.saveSeries(seriesData)
     .then((response) => {
+      logger.message(response);
       res.sendStatus(201);
     })
     .catch((err) => {

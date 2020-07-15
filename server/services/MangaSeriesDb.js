@@ -29,6 +29,7 @@ class MangaSeriesDb {
       title,
       author,
     } = seriesData;
+    console.log(seriesData);
 
     return pool.query(queryText, [path, thumbnail, title, author]);
   }
