@@ -21,7 +21,7 @@ class SearchResultsItem extends Component {
     } = this.props;
 
     return (
-      <Grid item xs={6}>
+      <Grid item xs={4}>
         <Grid container spacing={3}>
           <Grid item xs={7}>
             <img src={item.thumbnail} alt={`${item.title} thumbnail`} />

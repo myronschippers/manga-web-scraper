@@ -18,14 +18,14 @@ class SavedSeries extends Component {
   render() {
     const seriesElemList = this.props.store.series.map((item, index) => {
       return (
-        <Grid item xs={3} key={index}>
+        <Grid item xs={4} key={index}>
           <SavedSeriesItem item={item} />
         </Grid>
       );
     });
 
     const savedSeriesList = (
-      <Grid container spacing={3}>
+      <Grid container spacing={3} alignItems="stretch">
         {seriesElemList}
       </Grid>
     );
