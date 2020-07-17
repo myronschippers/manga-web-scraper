@@ -22,9 +22,11 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flex: '1 0 auto',
+    width: '75%',
+    boxSizing: 'border-box',
   },
   cover: {
-    width: 151,
+    width: '25%',
   },
   controls: {
     display: 'flex',
