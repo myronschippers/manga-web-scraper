@@ -56,4 +56,27 @@ router.post('/search', (req, res, next) => {
     });
 });
 
+router.post('/chapters', (req, res) => {
+  const seriesData = req.body;
+
+  mangaScraper.chaptersForSeries(seriesData)
+    .then((scrapperResp) => {
+      logger.success('POST /api/scrape/search:', scrapperResp);
+
+      mangaSeriesDb.saveAllChapters(scrapperResp)
+        .then((dbResp) => {
+          res.status(201);
+          res.send(dbResp);
+        })
+        .catch((err) => {
+          res.status(500);
+          res.send(err);
+        });
+    })
+    .catch((err) => {
+      res.status(500);
+      res.send(err);
+    });
+});
+
 module.exports = router;
