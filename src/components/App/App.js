@@ -84,9 +84,6 @@ class App extends Component {
                   component={navItem.component}
                 />
               ))}
-              <div className="container">
-                <SavedSeries />
-              </div>
 
               <div className="container">
                 <Panel>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PageLayout from '../PageLayout/PageLayout';
+import SavedSeries from '../../SavedSeries/SavedSeries';
 
 function Home(props) {
   const [count, setCount] = useState(0);
@@ -7,6 +8,7 @@ function Home(props) {
   return (
     <PageLayout hdgText="Home">
       HOME PAGE
+      <SavedSeries />
     </PageLayout>
   );
 }
