@@ -68,12 +68,12 @@ class App extends Component {
 
     return (
       <ThemeProvider theme={theme}>
-        <div className="site">
-          <div className="site-hd">
-            <Header primeHdg={'Manga Scraper'} />
-          </div>
-          <div className="site-bd">
-            <Router>
+        <Router>
+          <div className="site">
+            <div className="site-hd">
+              <Header primeHdg={'Manga Scraper'} />
+            </div>
+            <div className="site-bd">
               <Route exact path="/" component={Home} />
               <div className="container">
                 <SavedSeries />
@@ -90,12 +90,12 @@ class App extends Component {
                 </Panel>
 
               </div>
-            </Router>
+            </div>
+            <div className="site-ft">
+                <Footer />
+            </div>
           </div>
-          <div className="site-ft">
-              <Footer />
-          </div>
-        </div>
+        </Router>
       </ThemeProvider>
     );
   }
