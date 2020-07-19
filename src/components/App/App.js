@@ -11,6 +11,8 @@ import {
 import 'normalize.css';
 import './app.css';
 
+import mainNavConfig from '../../constants/mainNav.config';
+
 // Page Components
 import Home from '../pages/Home/Home';
 
@@ -74,7 +76,14 @@ class App extends Component {
               <Header primeHdg={'Manga Scraper'} />
             </div>
             <div className="site-bd">
-              <Route exact path="/" component={Home} />
+              {/* RENDER PAGE ROUTES BASED ON NAV CONFIG */}
+              {mainNavConfig.map((navItem, index) => (
+                <Route
+                  exact
+                  path={navItem.path}
+                  component={navItem.component}
+                />
+              ))}
               <div className="container">
                 <SavedSeries />
               </div>
