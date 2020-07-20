@@ -7,7 +7,11 @@ import mainNavConfig from '../../constants/mainNav.config';
 function Navigation (props) {
   return (
     <ul className={styles.nav}>
-      {mainNavConfig.map((navItem, index) => (
+      {mainNavConfig
+        .filter((navItem, index) => (
+          navItem.showNavLink
+        ))
+        .map((navItem, index) => (
         <li key={index}>
           <Link to={navItem.path}>{navItem.name}</Link>
         </li>
