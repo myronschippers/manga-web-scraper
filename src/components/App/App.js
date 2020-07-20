@@ -84,18 +84,6 @@ class App extends Component {
                   component={navItem.component}
                 />
               ))}
-
-              <div className="container">
-                <Panel>
-                  <div>
-                      <SearchField />
-                  </div>
-                  APPLICATION BODY
-
-                  <SearchResultsList />
-                </Panel>
-
-              </div>
             </div>
             <div className="site-ft">
                 <Footer />

@@ -7,7 +7,6 @@ function Home(props) {
 
   return (
     <PageLayout hdgText="Home">
-      HOME PAGE
       <SavedSeries />
     </PageLayout>
   );
