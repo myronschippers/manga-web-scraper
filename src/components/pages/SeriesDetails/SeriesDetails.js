@@ -10,6 +10,8 @@ import PageLayout from '../PageLayout/PageLayout';
 
 function SeriesDetails (props) {
   const [count, setCount] = useState(0);
+  const seriesId = this.props.match.params.id;
+  console.log('seriesId: ', seriesId);
 
   return (
     <PageLayout hdgText="Series Details">
