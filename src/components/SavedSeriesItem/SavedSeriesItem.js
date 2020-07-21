@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 import {
   Card,
@@ -46,8 +47,12 @@ function SavedSeriesItem(props) {
     item
   } = props;
 
+  function clickToDetails() {
+    props.history(`/series-details/${props.item.id}`);
+  }
+
   return (
-    <Card className={classes.root}>
+    <Card onClick={clickToDetails} className={classes.root}>
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
@@ -70,4 +75,4 @@ function SavedSeriesItem(props) {
   );
 }
 
-export default SavedSeriesItem;
+export default withRouter(SavedSeriesItem);
