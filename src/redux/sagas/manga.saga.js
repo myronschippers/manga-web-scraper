@@ -37,9 +37,37 @@ function* mangaSeriesFetch(action) {
   }
 }
 
+function* mangaSeriesChapterFetch(action) {
+  try {
+    const chaptersResp = yield axios.get(`/api/manga/series/chapters/${action.seriesId}`);
+    yield put({ type: 'SET_CHAPTERS', payload: chaptersResp.data });
+  } catch(err) {
+    console.log('Error with getting the chapters:', err);
+    yield put({
+      type: 'RAISE_ERROR',
+      payload: 'There was an error retrieving the chapters for current series.',
+    });
+  }
+}
+
+function* mangaSeriesDetails(action) {
+  try {
+    const seriesDetailsResp = yield axios.get(`/api/manga/series/details`);
+    yield put({ type: 'SET_SERIES_DETAILS', seriesDetailsResp.data });
+  } catch(err) {
+    console.log('Error with getting series details:', err);
+    yield put({
+      type: 'RAISE_ERROR',
+      payload: 'There was an error retrieving the series details.',
+    });
+  }
+}
+
 function* mangaSaga() {
   yield takeLatest('API_SAVE_SERIES', mangaSeriesSave);
   yield takeLatest('API_FETCH_SERIES', mangaSeriesFetch);
+  yield takeLatest('API_FETCH_SERIES_CHAPTERS', mangaSeriesChapterFetch);
+  yield takeLatest('API_FETCH_SERIES_DETAILS', mangaSeriesDetails);
 }
 
 export default mangaSaga;
