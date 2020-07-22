@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
 // MATERIAL-UI COMPONENTS
 import {
@@ -12,6 +13,21 @@ function SeriesDetails (props) {
   const [count, setCount] = useState(0);
   const seriesId = this.props.match.params.id;
   console.log('seriesId: ', seriesId);
+
+  // functional component equivalent of componentDidMount
+  useEffect(() => {
+    // FETCH all chapters for series
+    // props.dispatch({
+    //   type: 'API_FETCH_SERIES_CHAPTERS',
+    //   payload: { seriesId },
+    // });
+
+    // FETCH single series details
+    props.dispatch({
+      type: 'API_FETCH_SERIES_DETAILS',
+      payload: { seriesId },
+    });
+  });
 
   return (
     <PageLayout hdgText="Series Details">
@@ -33,4 +49,4 @@ function SeriesDetails (props) {
   );
 }
 
-export default SeriesDetails;
+export default connect()(SeriesDetails);
