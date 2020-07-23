@@ -12,28 +12,32 @@ class MangaSeriesDb {
    * Retrieve the entire list of series that are currently stored
    * in the database
    */
-  fetchAllSeries() {
+  async fetchAllSeries() {
     const queryText = `SELECT * FROM "${this.seriesDb}";`;
 
-    return pool.query(queryText);
+    const allSeries = await pool.query(queryText);
+
+    return allSeries;
   }
 
   /**
    * Retrieving a specific series based on the `seriesId` passed
    * @param {number} seriesId
    */
-  fetchSeries(seriesId) {
+  async fetchSeries(seriesId) {
     const queryText = `SELECT * FROM "${this.seriesDb}"
       WHERE id=$1;`;
 
-    return pool.query(queryText, [seriesId]);
+    const singleSeries = await pool.query(queryText, [seriesId]);
+
+    return singleSeries;
   }
 
   /**
    * Saving new series to database.
    * @param {object} seriesData
    */
-  saveSeries(seriesData) {
+  async saveSeries(seriesData) {
     const queryText = `INSERT INTO "${this.seriesDb}" ("path", "thumbnail", "title", "author", "created_at")
       VALUES ($1, $2, $3, $4, current_timestamp);`;
     const {
@@ -44,7 +48,9 @@ class MangaSeriesDb {
     } = seriesData;
     console.log(seriesData);
 
-    return pool.query(queryText, [path, thumbnail, title, author]);
+    const newSeries = await pool.query(queryText, [path, thumbnail, title, author]);
+
+    return newSeries;
   }
 
   /**
@@ -52,7 +58,7 @@ class MangaSeriesDb {
    * @param {array.object} chaptersList
    * @param {object} seriesData
    */
-  saveAllChapters(chaptersList, seriesData) {
+  async saveAllChapters(chaptersList, seriesData) {
     let dataForQuery = [];
     let queryText = `INSERT INTO "${this.chaptersDb}"
       ("name", "path", "title", "sequence", "series_id", "created_at")
@@ -97,7 +103,9 @@ class MangaSeriesDb {
     console.log('chapter list - queryText:', queryText);
     console.log('chapter list - dataForQuery:', dataForQuery);
 
-    return pool.query(queryText, dataForQuery);
+    const chaptersResponse = await pool.query(queryText, dataForQuery);
+
+    return chaptersResponse;
   }
 
   /**
