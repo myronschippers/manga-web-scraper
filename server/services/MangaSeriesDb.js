@@ -83,6 +83,24 @@ class MangaSeriesDb {
     return pool.query(queryText, dataForQuery);
   }
 
+  /**
+   * Retrieving all chapters for a specific series and the series data
+   * form the database and then combining both into a single object to
+   * send back.
+   * @param {number} seriesId
+   */
+  async fetchSeriesChapters(seriesId) {
+    const queryText = `SELECT * FROM "${this.chaptersDb}" WHERE "series_id" = $1;`;
+
+    const seriesDbData = await this.fetchSeries(seriesId);
+    const chaptersDbData = await pool.query(queryText, [seriesData]);
+
+    return {
+      ...seriesDbData.rows[0],
+      chapters: chaptersDbData.rows,
+    };
+  }
+
   static createSingleton() {
     return new MangaSeriesDb();
   }

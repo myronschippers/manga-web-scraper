@@ -31,6 +31,15 @@ router.post('/series', (req, res, next) => {
 
 router.get('/series/chapters/:id', (req, res, next) => {
   const seriesId = req.params.id;
-})
+
+  mangaSeriesDb.fetchSeriesChapters(seriesId)
+    .then((seriesWithChapters) => {
+      res.send(seriesWithChapters);
+    })
+    .catch((err) => {
+      console.log('manga route series POST error: ', err);
+      res.sendStatus(500);
+    });
+});
 
 module.exports = router;
