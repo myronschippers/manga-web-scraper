@@ -29,4 +29,8 @@ router.post('/series', (req, res, next) => {
     });
 });
 
+router.get('/series/chapters/:id', (req, res, next) => {
+  const seriesId = req.params.id;
+})
+
 module.exports = router;
