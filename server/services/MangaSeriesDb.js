@@ -16,7 +16,7 @@ class MangaSeriesDb {
 
     const allSeries = await pool.query(queryText);
 
-    return allSeries;
+    return allSeries.rows;
   }
 
   /**
@@ -29,7 +29,7 @@ class MangaSeriesDb {
 
     const singleSeries = await pool.query(queryText, [seriesId]);
 
-    return singleSeries;
+    return singleSeries.rows;
   }
 
   /**
@@ -49,7 +49,7 @@ class MangaSeriesDb {
 
     const newSeries = await pool.query(queryText, [path, thumbnail, title, author]);
 
-    return newSeries;
+    return newSeries.rows;
   }
 
   /**
@@ -104,7 +104,7 @@ class MangaSeriesDb {
 
     const chaptersResponse = await pool.query(queryText, dataForQuery);
 
-    return chaptersResponse;
+    return chaptersResponse.rows;
   }
 
   /**
