@@ -1,5 +1,4 @@
 const pool = require('../modules/pool');
-const { default: logger } = require('redux-logger');
 
 class MangaSeriesDb {
   constructor() {
