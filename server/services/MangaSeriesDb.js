@@ -8,12 +8,20 @@ class MangaSeriesDb {
     this.pagesDb = 'pages';
   }
 
+  /**
+   * Retrieve the entire list of series that are currently stored
+   * in the database
+   */
   fetchAllSeries() {
     const queryText = `SELECT * FROM "${this.seriesDb}";`;
 
     return pool.query(queryText);
   }
 
+  /**
+   * Retrieving a specific series based on the `seriesId` passed
+   * @param {number} seriesId
+   */
   fetchSeries(seriesId) {
     const queryText = `SELECT * FROM "${this.seriesDb}"
       WHERE id=$1;`;
@@ -21,6 +29,10 @@ class MangaSeriesDb {
     return pool.query(queryText, [seriesId]);
   }
 
+  /**
+   * Saving new series to database.
+   * @param {object} seriesData
+   */
   saveSeries(seriesData) {
     const queryText = `INSERT INTO "${this.seriesDb}" ("path", "thumbnail", "title", "author", "created_at")
       VALUES ($1, $2, $3, $4, current_timestamp);`;
@@ -35,6 +47,11 @@ class MangaSeriesDb {
     return pool.query(queryText, [path, thumbnail, title, author]);
   }
 
+  /**
+   * Saves new chapters for associated series to the database.
+   * @param {array.object} chaptersList
+   * @param {object} seriesData
+   */
   saveAllChapters(chaptersList, seriesData) {
     let dataForQuery = [];
     let queryText = `INSERT INTO "${this.chaptersDb}"
