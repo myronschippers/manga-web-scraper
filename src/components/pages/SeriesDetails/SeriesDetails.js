@@ -1,47 +1,73 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import mapStoreToProps from '../../../redux/mapStoreToProps';
 
 // MATERIAL-UI COMPONENTS
 import {
   Grid,
+  Typography,
 } from '@material-ui/core';
 
 // CUSTOM COMPONENTS
 import PageLayout from '../PageLayout/PageLayout';
 
 function SeriesDetails (props) {
-  const [count, setCount] = useState(0);
-  const seriesId = props.match.params.id;
+  const seriesId = parseInt(props.match.params.id);
   console.log('seriesId: ', seriesId);
 
   // functional component equivalent of componentDidMount
   useEffect(() => {
-    // FETCH all chapters for series
-    // props.dispatch({
-    //   type: 'API_FETCH_SERIES_CHAPTERS',
-    //   payload: { seriesId },
-    // });
-
     // FETCH single series details
-    props.dispatch({
-      type: 'API_FETCH_SERIES_DETAILS',
-      payload: { seriesId },
-    });
+    if (seriesId !== props.store.seriesDetails.id) {
+      props.dispatch({
+        type: 'API_FETCH_SERIES_DETAILS',
+        payload: { seriesId },
+      });
+    }
+  });
+
+  const chaptersListView = props.store.seriesDetails.chapters.map(item => {
+    return (
+      <li key={item.id}>
+        <strong>{item.name}</strong> {item.title}
+        <p>{item.path}</p>
+      </li>
+    )
   });
 
   return (
-    <PageLayout hdgText="Series Details">
+    <PageLayout hdgText={props.store.seriesDetails.title}>
       <Grid container spacing={2}>
         <Grid item xs={4}>
-          IMG
-          <p>Details</p>
+          <Typography variant="h5" component="h3">
+            Details:
+          </Typography>
+          <img
+            src={props.store.seriesDetails.thumbnail}
+            alt={props.store.seriesDetails.title}
+          />
+          <Typography variant="h6" component="h4">
+            Author: {props.store.seriesDetails.author}
+          </Typography>
+          <Typography variant="h6" component="h4">
+            Description:
+          </Typography>
+          <Typography variant="body1" component="p">
+            {props.store.seriesDetails.description ?
+              props.store.seriesDetails.description :
+              'There is no description available.'
+            }
+          </Typography>
         </Grid>
         <Grid item xs={8}>
-          <h3>Chapters</h3>
+          <Typography variant="h5" component="h3">
+            Chapters:
+          </Typography>
           <ul>
-            <li>Chapter Item</li>
-            <li>Chapter Item</li>
-            <li>Chapter Item</li>
+            {chaptersListView.length !== 0 ?
+              chaptersListView :
+              <li>No chapters fetched at this time.</li>
+            }
           </ul>
         </Grid>
       </Grid>
@@ -49,4 +75,4 @@ function SeriesDetails (props) {
   );
 }
 
-export default connect()(SeriesDetails);
+export default connect(mapStoreToProps('seriesDetails'))(SeriesDetails);
