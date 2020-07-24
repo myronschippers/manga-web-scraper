@@ -15,12 +15,13 @@ const mainNavConfig = [
   //   showNavLink: true,
   //   component: SearchResults,
   // },
-  // {
-  //   name: 'Series Details',
-  //   path: '/series-details/:id',
-  //   showNavLink: false,
-  //   component: SeriesDetails,
-  // }
+  // DETAILS PAGE FOR SINGLE SERIES
+  {
+    name: 'Series Details',
+    path: '/series-details/:id',
+    showNavLink: false,
+    component: SeriesDetails,
+  },
 ];
 
 export default mainNavConfig;
