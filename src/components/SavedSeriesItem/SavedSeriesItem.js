@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '0 0 5px 5px',
     borderTop: '3px solid #425dd0',
     boxShadow: '0 6px 4px rgb(0,0,0, 0.4)',
+    cursor: 'pointer',
   },
   details: {
     display: 'flex',
@@ -48,7 +49,7 @@ function SavedSeriesItem(props) {
   } = props;
 
   function clickToDetails() {
-    props.history(`/series-details/${props.item.id}`);
+    props.history.push(`/series-details/${props.item.id}`);
   }
 
   return (

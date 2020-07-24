@@ -79,6 +79,7 @@ class App extends Component {
               {/* RENDER PAGE ROUTES BASED ON NAV CONFIG */}
               {mainNavConfig.map((navItem, index) => (
                 <Route
+                  key={index}
                   exact
                   path={navItem.path}
                   component={navItem.component}
