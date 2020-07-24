@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/series', (req, res, next) => {
   mangaSeriesDb.fetchAllSeries()
     .then((response) => {
-      res.send(response.rows);
+      res.send(response);
     })
     .catch((err) => {
       console.error(err);
