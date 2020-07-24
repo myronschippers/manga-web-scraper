@@ -29,7 +29,7 @@ router.post('/series', (req, res, next) => {
     });
 });
 
-router.get('/series/chapters/:id', (req, res, next) => {
+router.get('/series/:id/chapters', (req, res, next) => {
   const seriesId = req.params.id;
 
   mangaSeriesDb.fetchSeriesChapters(seriesId)

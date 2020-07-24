@@ -114,13 +114,13 @@ class MangaSeriesDb {
    * @param {number} seriesId
    */
   async fetchSeriesChapters(seriesId) {
-    const queryText = `SELECT * FROM "${this.chaptersDb}" WHERE "series_id" = $1;`;
-
     const seriesDbData = await this.fetchSeries(seriesId);
-    const chaptersDbData = await pool.query(queryText, [seriesData]);
+
+    const queryText = `SELECT * FROM "${this.chaptersDb}" WHERE "series_id" = $1;`;
+    const chaptersDbData = await pool.query(queryText, [seriesId]);
 
     return {
-      ...seriesDbData.rows[0],
+      ...seriesDbData[0],
       chapters: chaptersDbData.rows,
     };
   }

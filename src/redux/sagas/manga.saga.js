@@ -52,7 +52,8 @@ function* mangaSeriesChapterFetch(action) {
 
 function* mangaSeriesDetails(action) {
   try {
-    const seriesDetailsResp = yield axios.get(`/api/manga/series/details`);
+    const seriesId = parseInt(action.payload.seriesId);
+    const seriesDetailsResp = yield axios.get(`/api/manga/series/${seriesId}/chapters`);
     yield put({ type: 'SET_SERIES_DETAILS', payload: seriesDetailsResp.data });
   } catch(err) {
     console.log('Error with getting series details:', err);
