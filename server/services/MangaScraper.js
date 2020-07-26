@@ -18,6 +18,30 @@ class MangaScraper {
     });
   }
 
+
+  // filter for only latest chapters
+  _pullOnlyLatestChapters(recentChapters, pastChapters) {
+    let chapterMatchIndex = 0;
+    let latestChapters = recentChapters;
+
+    if (pastChapters.length > 0) {
+      const lastSavedChapterPos = pastChapters.length - 1;
+      const lastSavedChapter = pastChapters[lastSavedChapterPos];
+
+      for (let i = 0; i < recentChapters.length; i++) {
+        const chapterForMatch = recentChapters[i];
+        if (chapterForMatch.title === lastSavedChapter.title
+          && chapterForMatch.name === lastSavedChapter.name
+        ) {
+          chapterMatchIndex = i;
+        }
+      }
+      latestChapters = recentChapters.slice(chapterMatchIndex + 1);
+    }
+
+    return latestChapters;
+  }
+
   async _loadScan() {
     // open the headless browser
     // to run full version of chrome use { headless: false } as launch argument
@@ -187,7 +211,9 @@ class MangaScraper {
         reversedArry.push(chapterData);
       }
 
-      return reversedArry;
+      const chaptersToSave = this._pullOnlyLatestChapters(reversedArry, chapterCollection);
+
+      return chaptersToSave;
     } catch(errSeries) {
       throw(errSeries);
     }
