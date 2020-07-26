@@ -25,10 +25,17 @@ function* scannerSearch(action) {
 
 function* scannerChapters(action) {
   try {
-    yield axios.post('/api/scraper/chapters', action.payload);
+    const chapterScraper = yield axios.post('/api/scraper/chapters', action.payload);
     yield put({
-      type: 'API_FETCH_SERIES_DETAILS',
-    })
+      type: 'TEST_CHAPTERS_SCRAPER',
+      payload: chapterScraper,
+    });
+    // yield put({
+    //   type: 'API_FETCH_SERIES_DETAILS',
+    //   payload: {
+    //     seriesId: action.payload.id
+    //   }
+    // });
   } catch(err) {
     console.log('Error with search:', err);
     yield put({
