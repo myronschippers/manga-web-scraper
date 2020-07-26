@@ -25,7 +25,7 @@ function* scannerSearch(action) {
 
 function* scannerChapters(action) {
   try {
-    yield axios.post('/api/scrapper/series/chapters', action.payload);
+    yield axios.post('/api/scraper/chapters', action.payload);
     yield put({
       type: 'API_FETCH_SERIES_DETAILS',
     })
