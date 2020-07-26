@@ -28,7 +28,7 @@ function* scannerChapters(action) {
     const chapterScraper = yield axios.post('/api/scraper/chapters', action.payload);
     yield put({
       type: 'TEST_CHAPTERS_SCRAPER',
-      payload: chapterScraper,
+      payload: chapterScraper.data,
     });
     // yield put({
     //   type: 'API_FETCH_SERIES_DETAILS',
