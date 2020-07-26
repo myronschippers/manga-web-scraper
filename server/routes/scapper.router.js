@@ -63,8 +63,15 @@ router.post('/chapters', (req, res) => {
     .then((scrapperResp) => {
       logger.success('POST /api/scrape/search:', scrapperResp);
 
+      // reverse array
+      const reversedArry = [];
+      for (let i = (scrapperResp.length - 1); i > 0; i--) {
+        const chapterData = scrapperResp[i];
+        reversedArry.push(chapterData);
+      }
+
       res.status(201);
-      res.send(scrapperResp);
+      res.send(reversedArry);
 
       // mangaSeriesDb.saveAllChapters(scrapperResp)
       //   .then((dbResp) => {
