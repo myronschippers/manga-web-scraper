@@ -6,6 +6,7 @@ import mapStoreToProps from '../../../redux/mapStoreToProps';
 import {
   Grid,
   Typography,
+  Button,
 } from '@material-ui/core';
 
 // CUSTOM COMPONENTS
@@ -25,6 +26,21 @@ function SeriesDetails (props) {
       });
     }
   });
+
+  //
+  // EVENT HANDLERS
+  // ------------------------------
+
+  function handleClickRefreshChapters() {
+    props.dispatch({
+      type: 'API_SCRAPE_CHAPTERS',
+      payload: props.store.seriesDetails,
+    })
+  }
+
+  //
+  // FOR VIEW
+  // ------------------------------
 
   const chaptersListView = props.store.seriesDetails.chapters.map(item => {
     return (
@@ -63,6 +79,16 @@ function SeriesDetails (props) {
           <Typography variant="h5" component="h3">
             Chapters:
           </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleClickRefreshChapters}
+          >
+            {chaptersListView.length === 0 ?
+              'Load Chapters' :
+              'Refresh Chapters'
+            }
+          </Button>
           <ul>
             {chaptersListView.length !== 0 ?
               chaptersListView :

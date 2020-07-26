@@ -23,6 +23,23 @@ function* scannerSearch(action) {
   }
 }
 
+function* scannerChapters(action) {
+  try {
+    yield axios.post('/api/scrapper/series/chapters', action.payload);
+    yield put({
+      type: 'API_FETCH_SERIES_DETAILS',
+    })
+  } catch(err) {
+    console.log('Error with search:', err);
+    yield put({
+      type: 'RAISE_ERROR',
+      payload: {
+        msg: 'There was an error scanning for chapters.'
+      }
+    });
+  }
+}
+
 function* scannerSaga() {
   yield takeLatest('API_SEARCH_MANGA', scannerSearch);
 }
