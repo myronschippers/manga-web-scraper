@@ -42,6 +42,7 @@ function* scannerChapters(action) {
 
 function* scannerSaga() {
   yield takeLatest('API_SEARCH_MANGA', scannerSearch);
+  yield takeLatest('API_SCRAPE_CHAPTERS', scannerChapters);
 }
 
 export default scannerSaga;
