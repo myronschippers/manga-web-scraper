@@ -85,7 +85,7 @@ class MangaScraper {
       chapterLinks.forEach((item) => {
         const rawResultItemData = {
           path: item.href,
-          chapterName: item.text,
+          name: item.text,
           title: item.title,
         };
 
@@ -180,7 +180,14 @@ class MangaScraper {
 
       await this._closeScanner();
 
-      return chapterCollection;
+      // reverse array
+      const reversedArry = [];
+      for (let i = (scrapperResp.length - 1); i > 0; i--) {
+        const chapterData = scrapperResp[i];
+        reversedArry.push(chapterData);
+      }
+
+      return reversedArry;
     } catch(errSeries) {
       throw(errSeries);
     }
