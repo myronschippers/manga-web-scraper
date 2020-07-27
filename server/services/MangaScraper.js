@@ -46,10 +46,8 @@ class MangaScraper {
     // open the headless browser
     // to run full version of chrome use { headless: false } as launch argument
     const browser = await puppeteer.launch();
-    // logger.sample('SERVER, browser:', browser);
     // open a new browser page
     const page = await browser.newPage();
-    // logger.sample('SERVER, page:', page);
 
     this._headlessChrome = {
       page,
@@ -66,9 +64,6 @@ class MangaScraper {
     // enter url in page and navigate to that page
     // Navigates to the search results for the 
     await page.goto(`https://manganelo.com/search/story/${formattedSearchTerm}`);
-
-    logger.label('SEARCH PAGE LOADED');
-    logger.message(formattedSearchTerm);
 
     const resultsDataList = await page.evaluate(() => {
       const searchResults = document.querySelectorAll(`.search-story-item > a`);
@@ -175,11 +170,8 @@ class MangaScraper {
 
   async search(searchWords) {
     try {
-      // logger.label('SEARCHING');
       this._searchWords = searchWords;
-      // logger.message('searchWords:', searchWords);
       const searchFormatted = this._makeSearchTermParam(searchWords);
-      // logger.message('searchFormatted:', searchFormatted);
 
       await this._checkBrowser();
 
@@ -187,9 +179,6 @@ class MangaScraper {
 
       await this._closeScanner();
 
-      // logger.message('SEARCH RESULTS:');
-      // console.log(searchResults)
-      // logger.end('SEARCHING');
       return searchResults;
     } catch(err) {
       throw(err);

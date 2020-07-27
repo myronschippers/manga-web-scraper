@@ -45,7 +45,6 @@ class MangaSeriesDb {
       title,
       author,
     } = seriesData;
-    console.log(seriesData);
 
     const newSeries = await pool.query(queryText, [path, thumbnail, title, author]);
 
@@ -67,25 +66,15 @@ class MangaSeriesDb {
 
     let placeHolderCount = 0;
     for (let i = 0; i < chaptersList.length; i++) {
-      queryText = `${queryText} (`;
-
-      for (let columnNum in pgPlaceholders) {
-        placeHolderCount += 1;
-        if (columnNum === 0) {
-          queryText = `${queryText}$${placeHolderCount}`;
-        } else {
-          queryText = `${queryText}, $${placeHolderCount}`;
-        }
-      }
-
       const chapterItem = chaptersList[i];
+
       const chapterDataSet = [
-        chapterItem.chapterName,
-        chapterItem.path,
-        chapterItem.title,
-        (i + 1), // sequence should not start at a 0 count
-        seriesData.id,
-        currentDate,
+        chapterItem.name, // "name"
+        chapterItem.path, // "path"
+        chapterItem.title, // "title"
+        (i + 1), // "sequence" (should not start at a 0 count)
+        seriesData.id, // "series_id"
+        currentDate, // "created_at"
       ];
 
       dataForQuery = [
@@ -93,14 +82,29 @@ class MangaSeriesDb {
         ...chapterDataSet
       ];
 
+      let queryItems = '';
+      for (let ii = 0; ii < pgPlaceholders.length; ii++) {
+        placeHolderCount += 1;
+        if (ii === 0) {
+          queryItems = `$${placeHolderCount}`;
+        } else {
+          queryItems = `${queryItems}, $${placeHolderCount}`;
+        }
+      }
+      queryText = `${queryText} (${queryItems})`;
+
       if (i === (chaptersList.length - 1)) {
-        queryText = `${queryText});`;
+        queryText = `${queryText};`;
       } else {
-        queryText = `${queryText}),`;
+        queryText = `${queryText},`;
       }
     }
-    console.log('chapter list - queryText:', queryText);
-    console.log('chapter list - dataForQuery:', dataForQuery);
+
+    // return {
+    //   originData: chaptersList,
+    //   query: queryText,
+    //   data: dataForQuery,
+    // }
 
     const chaptersResponse = await pool.query(queryText, dataForQuery);
 

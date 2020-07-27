@@ -41,13 +41,13 @@ router.post('/search', (req, res, next) => {
 
   mangaScraper.search(term)
     .then((results) => {
-      logger.success('POST /api/scrape/search:', results);
+      // logger.success('POST /api/scrape/search:', results);
 
       res.status(201)
       res.send(results);
     })
     .catch((err) => {
-      logger.error('POST /api/scrape/search:', err);
+      // logger.error('POST /api/scrape/search:', err);
 
       res.status(500);
       res.send({
@@ -61,20 +61,21 @@ router.post('/chapters', (req, res) => {
 
   mangaScraper.chaptersForSeries(seriesData)
     .then((scrapperResp) => {
-      logger.success('POST /api/scrape/search:', scrapperResp);
+      // logger.success('POST /api/scrape/search:', scrapperResp);
 
-      res.status(201);
-      res.send(scrapperResp);
+      // res.status(201);
+      // res.send(scrapperResp);
 
-      // mangaSeriesDb.saveAllChapters(scrapperResp)
-      //   .then((dbResp) => {
-      //     res.status(201);
-      //     res.send(dbResp);
-      //   })
-      //   .catch((err) => {
-      //     res.status(500);
-      //     res.send(err);
-      //   });
+      mangaSeriesDb.saveAllChapters(scrapperResp, seriesData)
+        .then((dbResp) => {
+          res.status(201);
+          res.send(dbResp);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500);
+          res.send(err);
+        });
     })
     .catch((err) => {
       res.status(500);
