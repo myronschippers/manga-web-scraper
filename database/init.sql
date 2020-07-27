@@ -25,7 +25,8 @@ CREATE TABLE "chapters" (
   "sequence" VARCHAR(40) NOT NULL,
   "title" VARCHAR(200) NOT NULL,
   "created_at" TIMESTAMP NOT NULL,
-  "series_id" INT REFERENCES "series" NOT NULL
+  "series_id" INT REFERENCES "series" NOT NULL,
+  "is_read" BOOLEAN,
 );
 
 CREATE TABLE "pages" (
