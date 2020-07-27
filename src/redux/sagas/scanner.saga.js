@@ -43,9 +43,22 @@ function* scannerChapters(action) {
   }
 }
 
+function* scannerRefreshChapterPages(action) {
+  try {
+    // TODO - api call to scraper to grab latest pages for a chapter
+  } catch(err) {
+    console.warn(err);
+    yield put({
+      type: 'RAISE_ERROR',
+      payload: 'There was an error retrieving latest chapter pages.',
+    });
+  }
+}
+
 function* scannerSaga() {
   yield takeLatest('API_SEARCH_MANGA', scannerSearch);
   yield takeLatest('API_SCRAPE_CHAPTERS', scannerChapters);
+  yield takeLatest('API_REFRESH_CHAPTER_PAGES', scannerRefreshChapterPages);
 }
 
 export default scannerSaga;

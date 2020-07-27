@@ -135,6 +135,35 @@ class MangaSeriesDb {
     };
   }
 
+  /**
+   * Retrieve all data related to a specific chapter
+   * @param {number} chapterId - id value for a specific chapter
+   */
+  async fetchChapter(chapterId) {
+    const queryText = `SELECT * FROM "${this.chaptersDb}" WHERE "id" = $1;`;
+
+    const arrayWithChapter = await pool.query(queryText, [chapterId]);
+
+    return arrayWithChapter.rows[0]; // should be only a single item in the array
+  }
+
+  async fetchPagesForChapter(chapterId) {
+    const queryText = `SELECT * FROM "${this.pagesDb}" WHERE "chapter_id" = $1;`
+    const pagesList = await pool.query(queryText, [chapterId]);
+
+    return pagesList.rows;
+  }
+
+  async fetchChapterWithPages(chapterId) {
+    const chapterInfo = await this.fetchChapter(chapterId);
+    const pages = await this.fetchPagesForChapter(chapterId);
+
+    return {
+      ...chapterInfo,
+      pages,
+    };
+  }
+
   static createSingleton() {
     return new MangaSeriesDb();
   }

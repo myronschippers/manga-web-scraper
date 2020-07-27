@@ -53,13 +53,10 @@ function* mangaSeriesDetails(action) {
 
 function* mangaFetchChapterPages(action) {
   try {
-    // const chapterDetails = yield axios.get(`/api/manga/chapter/${action.chapterId}/pages`);
+    const chapterDetails = yield axios.get(`/api/manga/chapter/${action.payload.chapterId}/pages`);
     yield put({
       type: 'SET_CHAPTER_DETAILS',
-      payload: {
-        ...action.payload,
-        pages: [],
-      }
+      payload: chapterDetails.data
     });
   } catch(err) {
     console.warn(err);
