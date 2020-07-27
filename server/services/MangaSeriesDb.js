@@ -67,12 +67,18 @@ class MangaSeriesDb {
     let placeHolderCount = 0;
     for (let i = 0; i < chaptersList.length; i++) {
       const chapterItem = chaptersList[i];
+      let sequenceValue = (i + 1);
+
+      if (seriesData.chapters.length > 0) {
+        const lastSavedChapter = seriesData.chapters[seriesData.chapters.length - 1];
+        sequenceValue = (i + 1) + lastSavedChapter.sequence;
+      }
 
       const chapterDataSet = [
         chapterItem.name, // "name"
         chapterItem.path, // "path"
         chapterItem.title, // "title"
-        (i + 1), // "sequence" (should not start at a 0 count)
+        sequenceValue, // "sequence" (should not start at a 0 count)
         seriesData.id, // "series_id"
         currentDate, // "created_at"
       ];
