@@ -39,10 +39,6 @@ function SeriesDetails (props) {
   }
 
   function handleClickToChapter(chapterData) {
-    props.dispatch({
-      type: 'API_FETCH_CHAPTER_PAGES',
-      payload: chapterData,
-    })
     props.history.push(`/chapter-details/${chapterData.id}`);
   }
 

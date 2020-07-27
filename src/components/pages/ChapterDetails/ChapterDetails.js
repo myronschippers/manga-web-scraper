@@ -8,6 +8,12 @@ import PageLayout from '../PageLayout/PageLayout';
 class ChapterDetails extends Component {
   componentDidMount() {
     console.log('MOUNTED, Chapter Details');
+    this.props.dispatch({
+      type: 'API_FETCH_CHAPTER_PAGES',
+      payload: {
+        chapterId: this.props.match.params.id
+      },
+    });
   }
 
   render() {

@@ -53,6 +53,7 @@ function* mangaSeriesDetails(action) {
 
 function* mangaFetchChapterPages(action) {
   try {
+    // const chapterDetails = yield axios.get(`/api/manga/chapter/${action.chapterId}/pages`);
     yield put({
       type: 'SET_CHAPTER_DETAILS',
       payload: {
