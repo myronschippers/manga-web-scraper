@@ -20,10 +20,10 @@ CREATE TABLE "series" (
 
 CREATE TABLE "chapters" (
   "id" SERIAL PRIMARY KEY,
-  "name" VARCHAR(40) NOT NULL,
+  "name" VARCHAR(100) NOT NULL,
   "path" VARCHAR(1000) NOT NULL,
   "sequence" VARCHAR(40) NOT NULL,
-  "title" VARCHAR(40) NOT NULL,
+  "title" VARCHAR(200) NOT NULL,
   "created_at" TIMESTAMP NOT NULL,
   "series_id" INT REFERENCES "series" NOT NULL
 );
