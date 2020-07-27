@@ -83,4 +83,8 @@ router.post('/chapters', (req, res) => {
     });
 });
 
+router.post('/refresh/pages/:chapterId', (req, res) => {
+  const chapterData = req.body;
+})
+
 module.exports = router;

@@ -27,15 +27,11 @@ function* scannerChapters(action) {
   try {
     const chapterScraper = yield axios.post('/api/scraper/chapters', action.payload);
     yield put({
-      type: 'TEST_CHAPTERS_SCRAPER',
-      payload: chapterScraper.data,
+      type: 'API_FETCH_SERIES_DETAILS',
+      payload: {
+        seriesId: action.payload.id
+      }
     });
-    // yield put({
-    //   type: 'API_FETCH_SERIES_DETAILS',
-    //   payload: {
-    //     seriesId: action.payload.id
-    //   }
-    // });
   } catch(err) {
     console.log('Error with search:', err);
     yield put({
