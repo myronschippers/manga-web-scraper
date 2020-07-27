@@ -51,10 +51,29 @@ function* mangaSeriesDetails(action) {
   }
 }
 
+function* mangaFetchChapterPages(action) {
+  try {
+    yield put({
+      type: 'SET_CHAPTER_DETAILS',
+      payload: {
+        ...action.payload,
+        pages: [],
+      }
+    });
+  } catch(err) {
+    console.warn(err);
+    yield put({
+      type: 'RAISE_ERROR',
+      payload: 'There was an error retrieving the chapter details.',
+    });
+  }
+}
+
 function* mangaSaga() {
   yield takeLatest('API_SAVE_SERIES', mangaSeriesSave);
   yield takeLatest('API_FETCH_SERIES', mangaSeriesFetch);
   yield takeLatest('API_FETCH_SERIES_DETAILS', mangaSeriesDetails);
+  yield takeLatest('API_FETCH_CHAPTER_PAGES', mangaFetchChapterPages);
 }
 
 export default mangaSaga;

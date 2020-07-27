@@ -38,13 +38,21 @@ function SeriesDetails (props) {
     })
   }
 
+  function handleClickToChapter(chapterData) {
+    props.dispatch({
+      type: 'API_FETCH_CHAPTER_PAGES',
+      payload: chapterData,
+    })
+    props.history.push(`/chapter-details/${chapterData.id}`);
+  }
+
   //
   // FOR VIEW
   // ------------------------------
 
   const chaptersListView = props.store.seriesDetails.chapters.map(item => {
     return (
-      <li key={item.id}>
+      <li key={item.id} onClick={(event) => handleClickToChapter(item)}>
         <strong>{item.name}</strong> {item.title}
         <p>{item.path}</p>
       </li>
