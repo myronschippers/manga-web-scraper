@@ -4,6 +4,7 @@ import mapStoreToProps from '../../../redux/mapStoreToProps';
 
 // CUSTOM COMPONENTS
 import PageLayout from '../PageLayout/PageLayout';
+import { Button } from '@material-ui/core';
 
 class ChapterDetails extends Component {
   componentDidMount() {
@@ -16,13 +17,33 @@ class ChapterDetails extends Component {
     });
   }
 
+  handleClickRefreshPages = () => {
+    this.props.dispatch({
+      type: 'API_REFRESH_PAGES',
+      payload: this.props.store.chapterDetails,
+    });
+  }
+
   render() {
     const chapterHdg = this.props.store.chapterDetails.name || 'Chapter Details';
+    const pagesListFOrDisplay = this.props.store.chapterDetails.pages.map((item, index) => {
+      return (
+        <div key={index}>
+          <img
+            src={item.img_src}
+            alt={`${this.props.store.chapterDetails.name} - page #${item.sequence}`}
+          />
+        </div>
+      );
+    });
 
     return (
       <PageLayout hdgText={chapterHdg}>
         <div>
-          PAGES LISTED for CHAPTER
+          {this.props.store.chapterDetails.pages.length === 0 &&
+            <Button onCLick={this.handleClickRefreshPages}>Refresh Pages</Button>
+          }
+          {pagesListFOrDisplay}
         </div>
         <div>
           <button>Previous</button>
