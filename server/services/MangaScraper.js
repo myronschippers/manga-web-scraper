@@ -42,6 +42,21 @@ class MangaScraper {
     return latestChapters;
   }
 
+  /**
+   * Takes an incoming array and completely reverses the order of the items
+   * in the array.
+   * @param {Array} originList
+   */
+  _reveresListOrder(originList) {
+    // reverse array
+    const reversedArry = [];
+    for (let i = (originList.length - 1); i > 0; i--) {
+      const chapterData = originList[i];
+      reversedArry.push(chapterData);
+    }
+    return reversedArry;
+  }
+
   async _loadScan() {
     // open the headless browser
     // to run full version of chrome use { headless: false } as launch argument
@@ -183,21 +198,6 @@ class MangaScraper {
     } catch(err) {
       throw(err);
     }
-  }
-
-  /**
-   * Takes an incoming array and completely reverses the order of the items
-   * in the array.
-   * @param {Array} originList
-   */
-  _reveresListOrder(originList) {
-    // reverse array
-    const reversedArry = [];
-    for (let i = (originList.length - 1); i > 0; i--) {
-      const chapterData = originList[i];
-      reversedArry.push(chapterData);
-    }
-    return reversedArry;
   }
 
   async chaptersForSeries(seriesData) {
