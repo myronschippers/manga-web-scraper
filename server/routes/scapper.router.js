@@ -61,11 +61,6 @@ router.post('/chapters', (req, res) => {
 
   mangaScraper.chaptersForSeries(seriesData)
     .then((scrapperResp) => {
-      // logger.success('POST /api/scrape/search:', scrapperResp);
-
-      // res.status(201);
-      // res.send(scrapperResp);
-
       mangaSeriesDb.saveAllChapters(scrapperResp, seriesData)
         .then((dbResp) => {
           res.status(201);
@@ -83,8 +78,20 @@ router.post('/chapters', (req, res) => {
     });
 });
 
-router.post('/refresh/pages/:chapterId', (req, res) => {
+router.post('/refresh/pages', (req, res) => {
   const chapterData = req.body;
-})
+
+  mangaScraper.pagesForChapter(chapterData)
+    .then((scraperResp) => {
+      res.status(201);
+      res.send(scraperResp);
+
+      // TODO - save to DB instead of sending back data
+    })
+    .catch((err) => {
+      res.status(500);
+      res.send(err);
+    });
+});
 
 module.exports = router;
