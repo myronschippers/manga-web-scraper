@@ -9,17 +9,19 @@ import { Button } from '@material-ui/core';
 class ChapterDetails extends Component {
   componentDidMount() {
     console.log('MOUNTED, Chapter Details');
-    this.props.dispatch({
-      type: 'API_FETCH_CHAPTER_PAGES',
-      payload: {
-        chapterId: this.props.match.params.id
-      },
-    });
+    if (this.props.match.params.id !== this.props.store.chapterDetails.id) {
+      this.props.dispatch({
+        type: 'API_FETCH_CHAPTER_PAGES',
+        payload: {
+          chapterId: this.props.match.params.id
+        },
+      });
+    }
   }
 
   handleClickRefreshPages = () => {
     this.props.dispatch({
-      type: 'API_REFRESH_PAGES',
+      type: 'API_REFRESH_CHAPTER_PAGES',
       payload: this.props.store.chapterDetails,
     });
   }

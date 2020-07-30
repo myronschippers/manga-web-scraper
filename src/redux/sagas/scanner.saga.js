@@ -46,6 +46,10 @@ function* scannerChapters(action) {
 function* scannerRefreshChapterPages(action) {
   try {
     // TODO - api call to scraper to grab latest pages for a chapter
+    yield axios.post(`/api/scanner/pages`, action.payload)
+    yield put({
+      type: 'API_FETCH_CHAPTER_PAGES'
+    });
   } catch(err) {
     console.warn(err);
     yield put({
