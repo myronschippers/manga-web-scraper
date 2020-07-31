@@ -51,6 +51,13 @@ class MangaSeriesDb {
     return newSeries.rows;
   }
 
+  // TODO - create private method that creates multiple inserts based on config passed
+  _createMultiValueInsert(originalData, insertList, columnProps, isSequenced) {}
+
+  async saveAllPages(pagesList, chapterData) {
+    // TODO - ensure correct data format before saving pages
+  }
+
   /**
    * Saves new chapters for associated series to the database.
    * @param {array.object} chaptersList
