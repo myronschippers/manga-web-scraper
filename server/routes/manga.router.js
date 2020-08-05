@@ -1,7 +1,6 @@
 const express = require('express');
 const mangaSeriesDb = require('../services/MangaSeriesDb');
 const logger = require('../utilities/logger');
-const { RemoveCircleOutlineRounded } = require('@material-ui/icons');
 
 const router = express.Router();
 

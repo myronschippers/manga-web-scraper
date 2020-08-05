@@ -55,7 +55,27 @@ class MangaSeriesDb {
   _createMultiValueInsert(originalData, insertList, columnProps, isSequenced) {}
 
   async saveAllPages(pagesList, chapterData) {
+    const pageColumns = {
+      sequence: null,
+      alt: null,
+      origin_img: null,
+      img_src: null,
+      created_at: new Date(),
+      chapter_id: null,
+    };
     // TODO - ensure correct data format before saving pages
+    const chapterId = chapterData.id;
+    let queryText = `INSERT INTO "${this.pagesDb}"
+        ("${pageColumns.join(`", "`)}")
+      VALUES`;
+    let placeholderCount = chapterData.pages.length > 0 ?
+      parseInt(chapterData.pages[chapterData.pages.length - 1].sequence) : 0;
+
+    for (let i = 0; i < pagesList.length; i++) {
+      // TODO - loop through pages and add to insert queryText
+    }
+
+    await pool.query(queryText, insertData)
   }
 
   /**
