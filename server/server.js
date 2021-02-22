@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 
 // routes
 const scrapperRouter = require('./routes/scapper.router');
@@ -11,8 +10,8 @@ const logger = require('./utilities/logger');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Serve static files
 app.use(express.static('build'));
@@ -22,5 +21,5 @@ app.use('/api/scraper', scrapperRouter);
 app.use('/api/manga', mangaRouter);
 
 app.listen(PORT, () => {
-    logger.edged(`Server is running on port: ${PORT}`);
+  logger.edged(`Server is running on port: ${PORT}`);
 });
