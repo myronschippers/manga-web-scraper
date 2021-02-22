@@ -8,7 +8,7 @@ const mangaRouter = require('./routes/manga.router');
 const logger = require('./utilities/logger');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5500;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
