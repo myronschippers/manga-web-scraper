@@ -18,7 +18,6 @@ class MangaScraper {
     });
   }
 
-
   // filter for only latest chapters
   _pullOnlyLatestChapters(recentChapters, pastChapters) {
     let chapterMatchIndex = 0;
@@ -30,8 +29,9 @@ class MangaScraper {
 
       for (let i = 0; i < recentChapters.length; i++) {
         const chapterForMatch = recentChapters[i];
-        if (chapterForMatch.title === lastSavedChapter.title
-          && chapterForMatch.name === lastSavedChapter.name
+        if (
+          chapterForMatch.title === lastSavedChapter.title &&
+          chapterForMatch.name === lastSavedChapter.name
         ) {
           chapterMatchIndex = i;
         }
@@ -50,7 +50,7 @@ class MangaScraper {
   _reveresListOrder(originList) {
     // reverse array
     const reversedArry = [];
-    for (let i = (originList.length - 1); i > 0; i--) {
+    for (let i = originList.length - 1; i > 0; i--) {
       const chapterData = originList[i];
       reversedArry.push(chapterData);
     }
@@ -66,19 +66,19 @@ class MangaScraper {
 
     this._headlessChrome = {
       page,
-      browser
+      browser,
     };
     this._isLoaded = true;
   }
 
   async _searchMangaSite(formattedSearchTerm) {
-    const {
-      page,
-    } = this._headlessChrome;
+    const { page } = this._headlessChrome;
 
     // enter url in page and navigate to that page
-    // Navigates to the search results for the 
-    await page.goto(`https://manganelo.com/search/story/${formattedSearchTerm}`);
+    // Navigates to the search results for the
+    await page.goto(
+      `https://manganelo.com/search/story/${formattedSearchTerm}`
+    );
 
     const resultsDataList = await page.evaluate(() => {
       const searchResults = document.querySelectorAll(`.search-story-item > a`);
@@ -93,7 +93,7 @@ class MangaScraper {
           path: item.href,
           title: item.title,
           thumbnail: item.children[0] != null ? item.children[0].src : null,
-          author
+          author,
         });
       });
 
@@ -106,15 +106,15 @@ class MangaScraper {
   }
 
   async _scrapeChapterList(mangaData) {
-    const {
-      page
-    } = this._headlessChrome;
+    const { page } = this._headlessChrome;
 
     // SEARCH THUMBNAIL >> GOTO RESULT PAGE FOR CHAPTERS
 
     await page.goto(mangaData.path);
     const mangaChapterList = await page.evaluate(() => {
-      const chapterLinks = document.querySelectorAll('.row-content-chapter > li > a.chapter-name');
+      const chapterLinks = document.querySelectorAll(
+        '.row-content-chapter > li > a.chapter-name'
+      );
       const chapterDataList = [];
       chapterLinks.forEach((item) => {
         const rawResultItemData = {
@@ -133,13 +133,13 @@ class MangaScraper {
   }
 
   async _scrapePagesForChapter(chapterInfo) {
-    const {
-      page
-    } = this._headlessChrome;
+    const { page } = this._headlessChrome;
 
     await page.goto(chapterInfo.path);
     const chapterPageImages = await page.evaluate(() => {
-      const chapterImageElem = document.querySelectorAll('.container-chapter-reader > img');
+      const chapterImageElem = document.querySelectorAll(
+        '.container-chapter-reader > img'
+      );
       const chapterImageList = [];
       chapterImageElem.forEach((item) => {
         chapterImageList.push({
@@ -155,15 +155,15 @@ class MangaScraper {
   }
 
   async _scrapePagesForChaptersList(mangaChapterList) {
-    const {
-      page
-    } = this._headlessChrome;
+    const { page } = this._headlessChrome;
 
     mangaChapterList.forEach(async (item, index) => {
       const chapterPath = item.path;
       await page.goto(chapterPath);
       const chapterImagesData = await page.evaluate(() => {
-        const chapterImageElem = document.querySelectorAll('.container-chapter-reader > img');
+        const chapterImageElem = document.querySelectorAll(
+          '.container-chapter-reader > img'
+        );
         const chapterImageList = [];
         chapterImageElem.forEach((item) => {
           chapterImageList.push({
@@ -180,9 +180,7 @@ class MangaScraper {
   }
 
   async _closeScanner() {
-    const {
-      browser,
-    } = this._headlessChrome;
+    const { browser } = this._headlessChrome;
 
     await browser.close();
 
@@ -217,12 +215,15 @@ class MangaScraper {
       await this._closeScanner();
 
       return searchResults;
-    } catch(err) {
-      throw(err);
+    } catch (err) {
+      throw err;
     }
   }
 
   async chaptersForSeries(seriesData) {
+    logger.message('seriesData:');
+    console.log(seriesData);
+
     try {
       await this._checkBrowser();
 
@@ -231,11 +232,14 @@ class MangaScraper {
       await this._closeScanner();
 
       const reversedArry = this._reveresListOrder(chapterCollection);
-      const chaptersToSave = this._pullOnlyLatestChapters(reversedArry, seriesData.chapters);
+      const chaptersToSave = this._pullOnlyLatestChapters(
+        reversedArry,
+        seriesData.chapters
+      );
 
       return chaptersToSave;
-    } catch(errSeries) {
-      throw(errSeries);
+    } catch (errSeries) {
+      throw errSeries;
     }
   }
 
