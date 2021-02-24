@@ -1,4 +1,5 @@
 const pool = require('../modules/pool');
+const logger = require('../utilities/logger');
 
 class MangaSeriesDb {
   constructor() {
@@ -39,14 +40,14 @@ class MangaSeriesDb {
   async saveSeries(seriesData) {
     const queryText = `INSERT INTO "${this.seriesDb}" ("path", "thumbnail", "title", "author", "created_at")
       VALUES ($1, $2, $3, $4, current_timestamp);`;
-    const {
+    const { path, thumbnail, title, author } = seriesData;
+
+    const newSeries = await pool.query(queryText, [
       path,
       thumbnail,
       title,
       author,
-    } = seriesData;
-
-    const newSeries = await pool.query(queryText, [path, thumbnail, title, author]);
+    ]);
 
     return newSeries.rows;
   }
@@ -68,14 +69,16 @@ class MangaSeriesDb {
     let queryText = `INSERT INTO "${this.pagesDb}"
         ("${pageColumns.join(`", "`)}")
       VALUES`;
-    let placeholderCount = chapterData.pages.length > 0 ?
-      parseInt(chapterData.pages[chapterData.pages.length - 1].sequence) : 0;
+    let placeholderCount =
+      chapterData.pages.length > 0
+        ? parseInt(chapterData.pages[chapterData.pages.length - 1].sequence)
+        : 0;
 
     for (let i = 0; i < pagesList.length; i++) {
       // TODO - loop through pages and add to insert queryText
     }
 
-    await pool.query(queryText, insertData)
+    await pool.query(queryText, insertData);
   }
 
   /**
@@ -90,15 +93,18 @@ class MangaSeriesDb {
       VALUES`;
     const currentDate = new Date();
     const pgPlaceholders = [1, 2, 3, 4, 5, 6];
+    logger.message('saveAllChapters - seriesData:', seriesData);
+    logger.message('saveAllChapters - chaptersList[0]:', chaptersList[0]);
 
     let placeHolderCount = 0;
     for (let i = 0; i < chaptersList.length; i++) {
       const chapterItem = chaptersList[i];
-      let sequenceValue = (i + 1);
+      let sequenceValue = i + 1;
 
-      if (seriesData.chapters.length > 0) {
-        const lastSavedChapter = seriesData.chapters[seriesData.chapters.length - 1];
-        sequenceValue = (i + 1) + lastSavedChapter.sequence;
+      if (seriesData.chapters != null && seriesData.chapters.length > 0) {
+        const lastSavedChapter =
+          seriesData.chapters[seriesData.chapters.length - 1];
+        sequenceValue = i + 1 + lastSavedChapter.sequence;
       }
 
       const chapterDataSet = [
@@ -110,10 +116,7 @@ class MangaSeriesDb {
         currentDate, // "created_at"
       ];
 
-      dataForQuery = [
-        ...dataForQuery,
-        ...chapterDataSet
-      ];
+      dataForQuery = [...dataForQuery, ...chapterDataSet];
 
       let queryItems = '';
       for (let ii = 0; ii < pgPlaceholders.length; ii++) {
@@ -126,7 +129,7 @@ class MangaSeriesDb {
       }
       queryText = `${queryText} (${queryItems})`;
 
-      if (i === (chaptersList.length - 1)) {
+      if (i === chaptersList.length - 1) {
         queryText = `${queryText};`;
       } else {
         queryText = `${queryText},`;
@@ -175,7 +178,7 @@ class MangaSeriesDb {
   }
 
   async fetchPagesForChapter(chapterId) {
-    const queryText = `SELECT * FROM "${this.pagesDb}" WHERE "chapter_id" = $1;`
+    const queryText = `SELECT * FROM "${this.pagesDb}" WHERE "chapter_id" = $1;`;
     const pagesList = await pool.query(queryText, [chapterId]);
 
     return pagesList.rows;
