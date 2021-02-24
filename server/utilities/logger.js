@@ -65,7 +65,7 @@ class Logger {
 
   message(...msgArgs) {
     const newMessages = msgArgs.map((logArg) => {
-      return this._msgStyle(logArg);
+      return typeof logArg === 'string' ? this._msgStyle(logArg) : logArg;
     });
     this._log(...newMessages);
   }

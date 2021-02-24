@@ -71,21 +71,24 @@ router.post('/chapters', (req, res) => {
       mangaSeriesDb
         .saveAllChapters(scraperResp, seriesData)
         .then((dbResp) => {
-          logger.message('dbResp:');
-          console.log(dbResp);
+          logger.message('dbResp:', dbResp);
 
           res.status(201);
           res.send(dbResp);
         })
         .catch((err) => {
-          console.log(err);
+          logger.error(err);
+
           res.status(500);
           res.send(err);
         });
     })
     .catch((err) => {
+      logger.error('catch scraper.router.post.chapters:', err);
       res.status(500);
-      res.send(err);
+      res.send({
+        errorMsg: `Failed to scrape chapters for ${seriesData.title}`,
+      });
     });
 });
 

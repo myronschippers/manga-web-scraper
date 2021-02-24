@@ -20,6 +20,11 @@ class MangaScraper {
 
   // filter for only latest chapters
   _pullOnlyLatestChapters(recentChapters, pastChapters) {
+    // exit early if not getting a pastChapters list
+    if (!pastChapters || pastChapters.length === 0) {
+      return recentChapters;
+    }
+
     let chapterMatchIndex = 0;
     let latestChapters = recentChapters;
 
@@ -221,9 +226,6 @@ class MangaScraper {
   }
 
   async chaptersForSeries(seriesData) {
-    logger.message('seriesData:');
-    console.log(seriesData);
-
     try {
       await this._checkBrowser();
 
@@ -239,7 +241,11 @@ class MangaScraper {
 
       return chaptersToSave;
     } catch (errSeries) {
-      throw errSeries;
+      logger.error('chaptersForSeries - errSeries:', errSeries);
+      throw new Error(
+        `Failed to scrape chapters for ${seriesData.title}`,
+        errSeries
+      );
     }
   }
 
