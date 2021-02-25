@@ -139,18 +139,27 @@ class MangaScraper {
 
   async _scrapePagesForChapter(chapterInfo) {
     const { page } = this._headlessChrome;
+    // chapterInfo = {
+    //   id: 1,
+    //   name: '',
+    //   path: '',
+    //   sequence: 1,
+    //   title: '',
+    //   created_at: '',
+    //   series_id: 1,
+    //   is_read: false,
+    // }
 
     await page.goto(chapterInfo.path);
     const chapterPageImages = await page.evaluate(() => {
-      const chapterImageElem = document.querySelectorAll(
-        '.container-chapter-reader > img'
+      const chapterImageElem = Array.from(
+        document.querySelectorAll('.container-chapter-reader > img')
       );
-      const chapterImageList = [];
-      chapterImageElem.forEach((item) => {
-        chapterImageList.push({
-          origin_img: item.scroll,
+      const chapterImageList = chapterImageElem.map((item) => {
+        return {
+          origin_img: item.getAttribute('src'),
           alt: item.title,
-        });
+        };
       });
 
       return Promise.resolve(chapterImageList);
@@ -250,6 +259,7 @@ class MangaScraper {
   }
 
   // TODO: Need to make function get all of the pages of a single chapter
+  // Scrape all pages for a single chapter
   async pagesForChapter(chapterData) {
     await this._checkBrowser();
 
