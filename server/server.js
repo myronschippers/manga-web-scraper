@@ -1,7 +1,7 @@
 const express = require('express');
 
 // routes
-const scrapperRouter = require('./routes/scapper.router');
+const scraperRouter = require('./routes/scaper.router');
 const mangaRouter = require('./routes/manga.router');
 
 // external modules
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('build'));
 
 // Register Routes
-app.use('/api/scraper', scrapperRouter);
+app.use('/api/scraper', scraperRouter);
 app.use('/api/manga', mangaRouter);
 
 app.listen(PORT, () => {
