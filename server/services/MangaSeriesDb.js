@@ -1,3 +1,4 @@
+const downloader = require('image-downloader');
 const pool = require('../modules/pool');
 const logger = require('../utilities/logger');
 
@@ -56,26 +57,45 @@ class MangaSeriesDb {
   _createMultiValueInsert(originalData, insertList, columnProps, isSequenced) {}
 
   async saveAllPages(pagesList, chapterData) {
+    // pagesList = [
+    //   {
+    //     origin_img: '',
+    //     alt: '',
+    //   }
+    // ];
+    // chapterData = {
+    //   id: 1,
+    //   name: '',
+    //   path: '',
+    //   sequence: 1,
+    //   title: '',
+    //   created_at: '',
+    //   series_id: 1,
+    //   is_read: false,
+    // };
     const pageColumns = {
       sequence: null,
       alt: null,
       origin_img: null,
       img_src: null,
       created_at: new Date(),
-      chapter_id: null,
+      chapter_id: chapterData.id,
     };
     // TODO - ensure correct data format before saving pages
-    const chapterId = chapterData.id;
+    const dbPageColumns = pageColumns.keys;
     let queryText = `INSERT INTO "${this.pagesDb}"
-        ("${pageColumns.join(`", "`)}")
+        ("${dbPageColumns.join(`", "`)}")
       VALUES`;
-    let placeholderCount =
-      chapterData.pages.length > 0
-        ? parseInt(chapterData.pages[chapterData.pages.length - 1].sequence)
-        : 0;
+    let placeholderCount = 0;
+    if (chapterData.pages != null && chapterData.pages.length > 0) {
+      placeholderCount = parseInt(
+        chapterData.pages[chapterData.pages.length - 1].sequence
+      );
+    }
 
     for (let i = 0; i < pagesList.length; i++) {
       // TODO - loop through pages and add to insert queryText
+      const pageData = pagesList[i];
     }
 
     await pool.query(queryText, insertData);
