@@ -86,6 +86,7 @@ class MangaSeriesDb {
     let queryText = `INSERT INTO "${this.pagesDb}"
         ("${dbPageColumns.join(`", "`)}")
       VALUES`;
+    let queryValues = [];
     let placeholderCount = 0;
     if (chapterData.pages != null && chapterData.pages.length > 0) {
       placeholderCount = parseInt(
@@ -96,9 +97,11 @@ class MangaSeriesDb {
     for (let i = 0; i < pagesList.length; i++) {
       // TODO - loop through pages and add to insert queryText
       const pageData = pagesList[i];
+
+      const fullPageData = dbPageColumns.map((item) => {});
     }
 
-    await pool.query(queryText, insertData);
+    await pool.query(queryText, queryValues);
   }
 
   /**
