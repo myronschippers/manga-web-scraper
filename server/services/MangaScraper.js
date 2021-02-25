@@ -137,6 +137,7 @@ class MangaScraper {
     return mangaChapterList;
   }
 
+  // load chapter site URL and pull all page images off of the site
   async _scrapePagesForChapter(chapterInfo) {
     const { page } = this._headlessChrome;
     // chapterInfo = {
@@ -258,7 +259,6 @@ class MangaScraper {
     }
   }
 
-  // TODO: Need to make function get all of the pages of a single chapter
   // Scrape all pages for a single chapter
   async pagesForChapter(chapterData) {
     await this._checkBrowser();
