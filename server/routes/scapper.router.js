@@ -16,18 +16,19 @@ router.get('/chapters/:seriesId', (req, res, next) => {
     .fetchSeries(req.params.seriesId)
     .then((response) => {
       const matchedSeries = response.rows[0];
+
       mangaScraper
         .chaptersForSeries(matchedSeries)
         .then((response) => {
           res.send(response);
         })
         .catch((err) => {
-          console.log('Error scraping series chapters:', err);
+          logger.error('GET /api/scraper/chapters/:seriesId ERROR:', err);
           res.sendStatus(500);
         });
     })
     .catch((err) => {
-      console.log('Error fetching series chapters:', err);
+      logger.error('GET /api/scraper/chapters/:seriesId ERROR:', err);
       res.sendStatus(500);
     });
 });
@@ -42,13 +43,11 @@ router.post('/search', (req, res, next) => {
   mangaScraper
     .search(term)
     .then((results) => {
-      // logger.success('POST /api/scrape/search:', results);
-
       res.status(201);
       res.send(results);
     })
     .catch((err) => {
-      // logger.error('POST /api/scrape/search:', err);
+      logger.error('POST /api/scrape/search ERROR:', err);
 
       res.status(500);
       res.send({
@@ -59,20 +58,14 @@ router.post('/search', (req, res, next) => {
 
 router.post('/chapters', (req, res) => {
   const seriesData = req.body;
-  logger.message('seriesData:');
-  console.log(seriesData);
 
   mangaScraper
     .chaptersForSeries(seriesData)
     .then((scraperResp) => {
-      logger.message('seriesData:');
-      console.log(scraperResp);
-
+      // Save Chapter data to the DB
       mangaSeriesDb
         .saveAllChapters(scraperResp, seriesData)
         .then((dbResp) => {
-          logger.message('dbResp:', dbResp);
-
           res.status(201);
           res.send(dbResp);
         })
@@ -84,7 +77,8 @@ router.post('/chapters', (req, res) => {
         });
     })
     .catch((err) => {
-      logger.error('catch scraper.router.post.chapters:', err);
+      logger.error('POST /api/scraper/chapters ERROR:', err);
+
       res.status(500);
       res.send({
         errorMsg: `Failed to scrape chapters for ${seriesData.title}`,
@@ -92,8 +86,18 @@ router.post('/chapters', (req, res) => {
     });
 });
 
-router.post('/refresh/pages', (req, res) => {
+router.post('/chapter/pages', (req, res) => {
   const chapterData = req.body;
+  // {
+  //   id: 1,
+  //   name: '',
+  //   path: '',
+  //   sequence: 1,
+  //   title: '',
+  //   created_at: '',
+  //   series_id: 1,
+  //   is_read: false,
+  // }
 
   mangaScraper
     .pagesForChapter(chapterData)
@@ -104,6 +108,8 @@ router.post('/refresh/pages', (req, res) => {
       // TODO - save to DB instead of sending back data
     })
     .catch((err) => {
+      logger.error('POST /api/scraper/chapter/pages ERROR:', err);
+
       res.status(500);
       res.send(err);
     });
