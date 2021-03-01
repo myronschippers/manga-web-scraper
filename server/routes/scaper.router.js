@@ -106,6 +106,17 @@ router.post('/chapter/pages', (req, res) => {
       res.send(scraperResp);
 
       // TODO - save to DB instead of sending back data
+      mangaSeriesDb
+        .saveAllPages(scraperResp, chapterData)
+        .then((dbResponse) => {
+          res.send(dbResponse);
+        })
+        .catch((err) => {
+          logger.error('POST DB /api/scraper/chapter/pages ERROR:', err);
+
+          res.status(500);
+          res.send(err);
+        });
     })
     .catch((err) => {
       logger.error('POST /api/scraper/chapter/pages ERROR:', err);

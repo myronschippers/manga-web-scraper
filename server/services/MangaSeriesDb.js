@@ -54,7 +54,38 @@ class MangaSeriesDb {
   }
 
   // TODO - create private method that creates multiple inserts based on config passed
-  _createMultiValueInsert(originalData, insertList, columnProps, isSequenced) {}
+  _createMultiValueInsert(dataList, tableName, isSequenced) {
+    // dataList = [
+    //   {} // object must have property keys matching table columns exactly
+    // ];
+    const columnNames = dataList[0].keys;
+    let queryValues = [];
+    let queryText = `INSERT INTO "${tableName}" ("${columnNames.join('", "')}")
+    VALUES`;
+    let queryValueOrder = 0;
+
+    queryText = `${queryText}
+      (`;
+    // ADD COLUMN NAMES TO QUERY
+    dataList.forEach((dataForQuery, dataIndex) => {
+      columnNames.map((columnKey, keyIndex) => {
+        queryValues.push(dataForQuery[columnKey]);
+
+        // add value order to query
+        queryValueOrder++;
+        queryText = `${queryText} $${queryValueOrder}`;
+        if (keyIndex !== columnNames.length + 1) {
+          queryText = `${queryText},`;
+        }
+      });
+    });
+    queryText = `${queryText});`;
+
+    return {
+      query: queryText,
+      values: queryValues,
+    };
+  }
 
   async saveAllPages(pagesList, chapterData) {
     // pagesList = [
@@ -82,11 +113,6 @@ class MangaSeriesDb {
       chapter_id: chapterData.id,
     };
     // TODO - ensure correct data format before saving pages
-    const dbPageColumns = pageColumns.keys;
-    let queryText = `INSERT INTO "${this.pagesDb}"
-        ("${dbPageColumns.join(`", "`)}")
-      VALUES`;
-    let queryValues = [];
     let placeholderCount = 0;
     if (chapterData.pages != null && chapterData.pages.length > 0) {
       placeholderCount = parseInt(
@@ -94,14 +120,27 @@ class MangaSeriesDb {
       );
     }
 
-    for (let i = 0; i < pagesList.length; i++) {
+    const fullPageDataList = pagesList.map((originPageData) => {
       // TODO - loop through pages and add to insert queryText
-      const pageData = pagesList[i];
+      placeholderCount += 1;
+      const imageFileName = `series-${chapterData.series_id}-chapter-${chapterData.sequence}-pg-${placeholderCount}`;
+      return {
+        ...pageColumns,
+        sequence: placeholderCount,
+        alt: originPageData.alt,
+        origin_img: originPageData.origin_img,
+        img_src: `/images/${imageFileName}`,
+      };
+    });
 
-      const fullPageData = dbPageColumns.map((item) => {});
-    }
+    const queryDataForDb = this._createMultiValueInsert(
+      fullPageDataList,
+      this.pagesDb,
+      false
+    );
 
-    await pool.query(queryText, queryValues);
+    await Promise.resolve(queryDataForDb);
+    // await pool.query(queryDataForDb.query, queryDataForDb.values);
   }
 
   /**
