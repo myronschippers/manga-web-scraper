@@ -114,11 +114,6 @@ class MangaSeriesDb {
     };
     // TODO - ensure correct data format before saving pages
     let placeholderCount = 0;
-    if (chapterData.pages != null && chapterData.pages.length > 0) {
-      placeholderCount = parseInt(
-        chapterData.pages[chapterData.pages.length - 1].sequence
-      );
-    }
 
     const fullPageDataList = pagesList.map((originPageData) => {
       // TODO - loop through pages and add to insert queryText
