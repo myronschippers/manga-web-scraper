@@ -102,13 +102,10 @@ router.post('/chapter/pages', (req, res) => {
   mangaScraper
     .pagesForChapter(chapterData)
     .then((scraperResp) => {
-      res.status(201);
-      res.send(scraperResp);
-
-      // TODO - save to DB instead of sending back data
       mangaSeriesDb
         .saveAllPages(scraperResp, chapterData)
         .then((dbResponse) => {
+          logger.message('dbResponse:', dbResponse);
           res.send(dbResponse);
         })
         .catch((err) => {
