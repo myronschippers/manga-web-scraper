@@ -58,28 +58,33 @@ class MangaSeriesDb {
     // dataList = [
     //   {} // object must have property keys matching table columns exactly
     // ];
-    const columnNames = dataList[0].keys;
+    const columnNames = Object.keys(dataList[0]);
     let queryValues = [];
     let queryText = `INSERT INTO "${tableName}" ("${columnNames.join('", "')}")
     VALUES`;
     let queryValueOrder = 0;
 
-    queryText = `${queryText}
-      (`;
     // ADD COLUMN NAMES TO QUERY
     dataList.forEach((dataForQuery, dataIndex) => {
+      queryText = `${queryText}
+      (`;
       columnNames.map((columnKey, keyIndex) => {
         queryValues.push(dataForQuery[columnKey]);
 
         // add value order to query
         queryValueOrder++;
         queryText = `${queryText} $${queryValueOrder}`;
-        if (keyIndex !== columnNames.length + 1) {
+        if (keyIndex !== columnNames.length - 1) {
           queryText = `${queryText},`;
         }
       });
+
+      queryText = `${queryText})`;
+      if (dataIndex !== dataList.length - 1) {
+        queryText = `${queryText},`;
+      }
     });
-    queryText = `${queryText});`;
+    queryText = `${queryText};`;
 
     return {
       query: queryText,
@@ -112,7 +117,6 @@ class MangaSeriesDb {
       created_at: new Date(),
       chapter_id: chapterData.id,
     };
-    // TODO - ensure correct data format before saving pages
     let placeholderCount = 0;
 
     const fullPageDataList = pagesList.map((originPageData) => {
@@ -135,6 +139,7 @@ class MangaSeriesDb {
     );
 
     await Promise.resolve(queryDataForDb);
+    return queryDataForDb;
     // await pool.query(queryDataForDb.query, queryDataForDb.values);
   }
 
