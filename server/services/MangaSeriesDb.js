@@ -1,4 +1,6 @@
-const downloader = require('image-downloader');
+const fs = require('fs');
+const path = require('path');
+const axios = require('axios');
 const pool = require('../modules/pool');
 const logger = require('../utilities/logger');
 
@@ -92,6 +94,33 @@ class MangaSeriesDb {
     };
   }
 
+  _makePageImageFileNameForDownload(originImgUrl, imgFileName) {
+    // Get the file name & extension
+    const originFileName = path.basename(originImgUrl);
+    let imgExtension = originFileName.split('.');
+    imgExtension = imgExtension[imgExtension.length - 1];
+
+    return `${imgFileName}.${imgExtension}`;
+  }
+
+  async _downloadImageToServer(imgUrl, imgFileName) {
+    // The path of the downloaded file on our machine
+    const localFilePath = path.resolve(__dirname, './page-images', imgFileName);
+
+    try {
+      const response = await axios({
+        method: 'GET',
+        url: imgUrl,
+        responseType: 'stream',
+      });
+
+      await response.data.pipe(fs.createWriteStream(localFilePath));
+    } catch (err) {
+      logger.error('_downloadImageToServer ERROR:', err);
+      return err;
+    }
+  }
+
   async saveAllPages(pagesList, chapterData) {
     // pagesList = [
     //   {
@@ -118,29 +147,45 @@ class MangaSeriesDb {
       chapter_id: chapterData.id,
     };
     let placeholderCount = 0;
+    const imageFilePromiseList = [];
 
-    const fullPageDataList = pagesList.map((originPageData) => {
-      // TODO - loop through pages and add to insert queryText
-      placeholderCount += 1;
-      const imageFileName = `series-${chapterData.series_id}-chapter-${chapterData.sequence}-pg-${placeholderCount}`;
-      return {
-        ...pageColumns,
-        sequence: placeholderCount,
-        alt: originPageData.alt,
-        origin_img: originPageData.origin_img,
-        img_src: `/images/${imageFileName}`,
-      };
-    });
+    try {
+      const fullPageDataList = pagesList.map((originPageData) => {
+        // TODO - loop through pages and add to insert queryText
+        placeholderCount += 1;
+        const imageFileName = `series_${chapterData.series_id}--chapter_${chapterData.sequence}--pg_${placeholderCount}`;
+        const localImagePath = this._makePageImageFileNameForDownload(
+          originPageData.origin_img,
+          imageFileName
+        );
 
-    const queryDataForDb = this._createMultiValueInsert(
-      fullPageDataList,
-      this.pagesDb,
-      false
-    );
+        imageFilePromiseList.push(
+          this._downloadImageToServer(originPageData.origin_img, imageFileName)
+        );
 
-    await Promise.resolve(queryDataForDb);
-    return queryDataForDb;
-    // await pool.query(queryDataForDb.query, queryDataForDb.values);
+        return {
+          ...pageColumns,
+          sequence: placeholderCount,
+          alt: originPageData.alt,
+          origin_img: originPageData.origin_img,
+          img_src: localImagePath,
+        };
+      });
+
+      const queryDataForDb = this._createMultiValueInsert(
+        fullPageDataList,
+        this.pagesDb,
+        false
+      );
+
+      await Promise.all(imageFilePromiseList);
+      // await Promise.resolve(queryDataForDb);
+      return queryDataForDb;
+      // await pool.query(queryDataForDb.query, queryDataForDb.values);
+    } catch (err) {
+      logger.error('MangaSeriesDb.saveAllPages, ERROR:', err);
+      throw new Error(err);
+    }
   }
 
   /**
@@ -155,8 +200,6 @@ class MangaSeriesDb {
       VALUES`;
     const currentDate = new Date();
     const pgPlaceholders = [1, 2, 3, 4, 5, 6];
-    logger.message('saveAllChapters - seriesData:', seriesData);
-    logger.message('saveAllChapters - chaptersList[0]:', chaptersList[0]);
 
     let placeHolderCount = 0;
     for (let i = 0; i < chaptersList.length; i++) {
