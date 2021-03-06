@@ -166,6 +166,26 @@ class MangaScraper {
       return Promise.resolve(chapterImageList);
     });
 
+    // chapterPageImages.forEach(async (pageItem, itemIndex) => {
+    //   try {
+    //     const viewSource = await page.goto(pageItem.origin_img);
+    //     const imageFileName = `series_${chapterInfo.series_id}--chapter_${
+    //       chapterInfo.sequence
+    //     }--pg_${itemIndex + 1}`;
+    //     const imageFilePath = `../page-images/${imageFileName}`;
+
+    //     fs.writeFile(imageFilePath, await viewSource.buffer(), function (err) {
+    //       if (err) {
+    //         return console.log(err);
+    //       }
+    //     });
+
+    //     chapterPageImages[itemIndex].img_src = imageFileName;
+    //   } catch (err) {
+    //     logger.error('_scrapePagesForChapter - ERROR:', err);
+    //   }
+    // });
+
     return chapterPageImages;
   }
 

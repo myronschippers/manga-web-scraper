@@ -94,32 +94,32 @@ class MangaSeriesDb {
     };
   }
 
-  _makePageImageFileNameForDownload(originImgUrl, imgFileName) {
-    // Get the file name & extension
-    const originFileName = path.basename(originImgUrl);
-    let imgExtension = originFileName.split('.');
-    imgExtension = imgExtension[imgExtension.length - 1];
+  // _makePageImageFileNameForDownload(originImgUrl, imgFileName) {
+  //   // Get the file name & extension
+  //   const originFileName = path.basename(originImgUrl);
+  //   let imgExtension = originFileName.split('.');
+  //   imgExtension = imgExtension[imgExtension.length - 1];
 
-    return `${imgFileName}.${imgExtension}`;
-  }
+  //   return `${imgFileName}.${imgExtension}`;
+  // }
 
-  async _downloadImageToServer(imgUrl, imgFileName) {
-    // The path of the downloaded file on our machine
-    const localFilePath = path.resolve(__dirname, './page-images', imgFileName);
+  // async _downloadImageToServer(imgUrl, imgFileName) {
+  //   // The path of the downloaded file on our machine
+  //   const localFilePath = path.resolve(__dirname, './page-images', imgFileName);
 
-    try {
-      const response = await axios({
-        method: 'GET',
-        url: imgUrl,
-        responseType: 'stream',
-      });
+  //   try {
+  //     const response = await axios({
+  //       method: 'GET',
+  //       url: imgUrl,
+  //       responseType: 'stream',
+  //     });
 
-      await response.data.pipe(fs.createWriteStream(localFilePath));
-    } catch (err) {
-      logger.error('_downloadImageToServer ERROR:', err);
-      return err;
-    }
-  }
+  //     await response.data.pipe(fs.createWriteStream(localFilePath));
+  //   } catch (err) {
+  //     logger.error('_downloadImageToServer ERROR:', err);
+  //     return err;
+  //   }
+  // }
 
   async saveAllPages(pagesList, chapterData) {
     // pagesList = [
@@ -153,22 +153,21 @@ class MangaSeriesDb {
       const fullPageDataList = pagesList.map((originPageData) => {
         // TODO - loop through pages and add to insert queryText
         placeholderCount += 1;
-        const imageFileName = `series_${chapterData.series_id}--chapter_${chapterData.sequence}--pg_${placeholderCount}`;
-        const localImagePath = this._makePageImageFileNameForDownload(
-          originPageData.origin_img,
-          imageFileName
-        );
+        // const imageFileName = `series_${chapterData.series_id}--chapter_${chapterData.sequence}--pg_${placeholderCount}`;
+        // const localImagePath = this._makePageImageFileNameForDownload(
+        //   originPageData.origin_img,
+        //   imageFileName
+        // );
 
-        imageFilePromiseList.push(
-          this._downloadImageToServer(originPageData.origin_img, imageFileName)
-        );
+        // imageFilePromiseList.push(
+        //   this._downloadImageToServer(originPageData.origin_img, imageFileName)
+        // );
 
         return {
           ...pageColumns,
           sequence: placeholderCount,
           alt: originPageData.alt,
           origin_img: originPageData.origin_img,
-          img_src: localImagePath,
         };
       });
 
